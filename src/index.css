@@ -1,105 +1,282 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Vaan Mitra Conservation Design System
+   Deep Tropical Rainforest Theme - NO ROUNDED CORNERS
+   All colors in HSL format */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Core Jungle Green Palette */
+    --jungle-darkest: 150 40% 8%;
+    --jungle-dark: 150 35% 12%;
+    --jungle-deep: 150 30% 18%;
+    --jungle-medium: 145 32% 25%;
+    --jungle-amazon: 140 35% 32%;
+    --jungle-tropical: 135 38% 40%;
+    --jungle-canopy: 130 42% 50%;
+    
+    /* Ivory & White Palette */
+    --ivory: 45 30% 96%;
+    --ivory-warm: 40 25% 92%;
+    --off-white: 45 20% 88%;
+    
+    /* Semantic Tokens */
+    --background: var(--jungle-darkest);
+    --foreground: var(--ivory);
+    
+    --card: var(--jungle-dark);
+    --card-foreground: var(--ivory);
+    
+    --popover: var(--jungle-deep);
+    --popover-foreground: var(--ivory);
+    
+    --primary: var(--jungle-tropical);
+    --primary-foreground: var(--ivory);
+    
+    --secondary: var(--jungle-medium);
+    --secondary-foreground: var(--ivory);
+    
+    --muted: var(--jungle-deep);
+    --muted-foreground: 140 15% 60%;
+    
+    --accent: var(--jungle-canopy);
+    --accent-foreground: var(--jungle-darkest);
+    
+    --destructive: 0 65% 45%;
+    --destructive-foreground: var(--ivory);
+    
+    --border: 150 20% 20%;
+    --input: 150 20% 15%;
+    --ring: var(--jungle-tropical);
+    
+    /* NO ROUNDED CORNERS - Square design system */
+    --radius: 0px;
+    
+    /* Gradients */
+    --gradient-jungle: linear-gradient(180deg, hsl(var(--jungle-darkest)) 0%, hsl(var(--jungle-deep)) 100%);
+    --gradient-canopy: linear-gradient(135deg, hsl(var(--jungle-amazon)) 0%, hsl(var(--jungle-tropical)) 100%);
+    --gradient-mist: linear-gradient(180deg, hsl(var(--jungle-dark) / 0.9) 0%, hsl(var(--jungle-darkest) / 0.95) 100%);
+    --gradient-hero-overlay: linear-gradient(180deg, hsl(var(--jungle-darkest) / 0.3) 0%, hsl(var(--jungle-darkest) / 0.85) 100%);
+    
+    /* Shadows */
+    --shadow-jungle: 0 10px 40px -10px hsl(var(--jungle-darkest) / 0.5);
+    --shadow-elevated: 0 25px 50px -12px hsl(0 0% 0% / 0.4);
+    --shadow-glow: 0 0 40px hsl(var(--jungle-tropical) / 0.3);
+    
+    /* Typography */
+    --font-display: 'Playfair Display', serif;
+    --font-body: 'Inter', sans-serif;
   }
 }
 
 @layer base {
   * {
     @apply border-border;
+    /* Enforce no rounded corners anywhere */
+    border-radius: 0 !important;
   }
-
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-body);
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    @apply font-bold tracking-tight;
+  }
+}
+
+@layer components {
+  /* Hero Button - Square, bold, conservation-tech */
+  .btn-hero {
+    @apply inline-flex items-center justify-center px-8 py-4 text-sm font-semibold uppercase tracking-widest transition-all duration-300;
+    background: linear-gradient(135deg, hsl(var(--jungle-amazon)) 0%, hsl(var(--jungle-tropical)) 100%);
+    color: hsl(var(--ivory));
+    border: 2px solid transparent;
+  }
+  
+  .btn-hero:hover {
+    background: linear-gradient(135deg, hsl(var(--jungle-tropical)) 0%, hsl(var(--jungle-canopy)) 100%);
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-2px);
+  }
+  
+  /* Ghost Button - Outlined */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center px-8 py-4 text-sm font-semibold uppercase tracking-widest transition-all duration-300;
+    background: transparent;
+    color: hsl(var(--ivory));
+    border: 2px solid hsl(var(--ivory) / 0.5);
+  }
+  
+  .btn-ghost:hover {
+    border-color: hsl(var(--jungle-canopy));
+    color: hsl(var(--jungle-canopy));
+    background: hsl(var(--jungle-canopy) / 0.1);
+  }
+  
+  /* Square Card */
+  .card-jungle {
+    @apply relative overflow-hidden;
+    background: hsl(var(--jungle-dark));
+    border: 1px solid hsl(var(--border));
+  }
+  
+  .card-jungle:hover {
+    border-color: hsl(var(--jungle-amazon));
+    box-shadow: var(--shadow-jungle);
+  }
+  
+  /* Stat Card */
+  .stat-card {
+    @apply p-8 text-center;
+    background: linear-gradient(180deg, hsl(var(--jungle-deep)) 0%, hsl(var(--jungle-dark)) 100%);
+    border: 1px solid hsl(var(--jungle-medium) / 0.3);
+  }
+  
+  /* Section styling */
+  .section-jungle {
+    @apply py-20 px-6;
+    background: var(--gradient-jungle);
+  }
+  
+  .section-ivory {
+    @apply py-20 px-6;
+    background: hsl(var(--ivory));
+    color: hsl(var(--jungle-darkest));
+  }
+  
+  /* Navigation */
+  .nav-link {
+    @apply relative px-4 py-2 text-sm font-medium uppercase tracking-wider transition-colors duration-300;
+    color: hsl(var(--ivory) / 0.8);
+  }
+  
+  .nav-link:hover,
+  .nav-link.active {
+    color: hsl(var(--jungle-canopy));
+  }
+  
+  .nav-link::after {
+    @apply absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300;
+    content: '';
+    background: hsl(var(--jungle-canopy));
+  }
+  
+  .nav-link:hover::after,
+  .nav-link.active::after {
+    @apply w-full;
+  }
+  
+  /* Image overlay */
+  .image-overlay {
+    @apply absolute inset-0;
+    background: var(--gradient-hero-overlay);
+  }
+  
+  /* Form elements */
+  .input-jungle {
+    @apply w-full px-4 py-4 text-sm transition-all duration-300 outline-none;
+    background: hsl(var(--jungle-deep));
+    border: 2px solid hsl(var(--border));
+    color: hsl(var(--ivory));
+  }
+  
+  .input-jungle:focus {
+    border-color: hsl(var(--jungle-tropical));
+    box-shadow: 0 0 0 3px hsl(var(--jungle-tropical) / 0.2);
+  }
+  
+  .input-jungle::placeholder {
+    color: hsl(var(--muted-foreground));
+  }
+}
+
+@layer utilities {
+  /* Breathing animation - organic, nature-inspired */
+  .animate-breathe {
+    animation: breathe 4s ease-in-out infinite;
+  }
+  
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.02); opacity: 0.95; }
+  }
+  
+  /* Floating animation - like leaves in wind */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  /* Pulse glow - for live counters */
+  .animate-pulse-glow {
+    animation: pulseGlow 2s ease-in-out infinite;
+  }
+  
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 20px hsl(var(--jungle-tropical) / 0.3); }
+    50% { box-shadow: 0 0 40px hsl(var(--jungle-tropical) / 0.6); }
+  }
+  
+  /* Counter tick animation */
+  .animate-counter {
+    animation: counterTick 0.3s ease-out;
+  }
+  
+  @keyframes counterTick {
+    0% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  
+  /* Fade up animation */
+  .animate-fade-up {
+    animation: fadeUp 0.6s ease-out forwards;
+  }
+  
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Stagger delay utilities */
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+  .delay-500 { animation-delay: 500ms; }
+  
+  /* Text gradient */
+  .text-gradient-jungle {
+    background: linear-gradient(135deg, hsl(var(--jungle-canopy)) 0%, hsl(var(--jungle-tropical)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Glass effect */
+  .glass-jungle {
+    background: hsl(var(--jungle-dark) / 0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid hsl(var(--jungle-medium) / 0.3);
   }
 }
