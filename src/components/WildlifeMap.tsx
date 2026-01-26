@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { useEffect, useMemo, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -360,17 +359,6 @@ const createCustomIcon = (species: WildlifeSpecies) => {
   });
 };
 
-// Map controller component for programmatic control
-const MapController = ({ center, zoom }: { center: [number, number]; zoom: number }) => {
-  const map = useMap();
-  
-  useEffect(() => {
-    map.flyTo(center, zoom, { duration: 1.5 });
-  }, [center, zoom, map]);
-  
-  return null;
-};
-
 interface WildlifeMapProps {
   filter: string;
   onSpeciesSelect: (species: WildlifeSpecies | null) => void;
@@ -378,13 +366,17 @@ interface WildlifeMapProps {
 }
 
 const WildlifeMap = ({ filter, onSpeciesSelect, selectedSpecies }: WildlifeMapProps) => {
+  const mapElRef = useRef<HTMLDivElement | null>(null);
+  const mapRef = useRef<L.Map | null>(null);
+  const markersLayerRef = useRef<L.LayerGroup | null>(null);
   const [mapCenter, setMapCenter] = useState<[number, number]>([22.5, 82.5]);
   const [mapZoom, setMapZoom] = useState(5);
 
   // Filter species based on category
-  const filteredSpecies = filter === "all" 
-    ? wildlifeData 
-    : wildlifeData.filter(s => s.category === filter);
+  const filteredSpecies = useMemo(
+    () => (filter === "all" ? wildlifeData : wildlifeData.filter((s) => s.category === filter)),
+    [filter]
+  );
 
   // Handle species selection
   const handleMarkerClick = (species: WildlifeSpecies) => {
@@ -396,74 +388,118 @@ const WildlifeMap = ({ filter, onSpeciesSelect, selectedSpecies }: WildlifeMapPr
   // Status color mapping
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "Critically Endangered": return "#DC2626";
-      case "Endangered": return "#EA580C";
-      case "Vulnerable": return "#CA8A04";
-      case "Near Threatened": return "#65A30D";
-      case "Least Concern": return "#16A34A";
-      default: return "#6B7280";
+      case "Critically Endangered":
+        return "#DC2626";
+      case "Endangered":
+        return "#EA580C";
+      case "Vulnerable":
+        return "#CA8A04";
+      case "Near Threatened":
+        return "#65A30D";
+      case "Least Concern":
+        return "#16A34A";
+      default:
+        return "#6B7280";
     }
   };
 
+  const buildPopupHtml = (species: WildlifeSpecies) => {
+    const statusColor = getStatusColor(species.status);
+    return `
+      <div style="min-width: 200px; font-family: inherit;">
+        <div style="display:flex; align-items:center; gap: 8px; margin-bottom: 8px;">
+          <div style="font-size: 22px; line-height: 1;">${species.icon}</div>
+          <div>
+            <div style="font-weight: 700; font-size: 14px; color: #111827;">${species.name}</div>
+            <div style="font-size: 12px; font-style: italic; color: #4B5563;">${species.scientificName}</div>
+          </div>
+        </div>
+        <div style="font-size: 13px; color: #374151; display: grid; gap: 6px;">
+          <div><strong>Location:</strong> ${species.location}</div>
+          <div><strong>Population:</strong> ~${species.population.toLocaleString()}</div>
+          <div style="display:flex; align-items:center; gap: 6px;">
+            <strong>Status:</strong>
+            <span style="display:inline-block; padding: 2px 8px; font-size: 11px; font-weight: 600; color: #fff; background: ${statusColor};">
+              ${species.status}
+            </span>
+          </div>
+        </div>
+      </div>
+    `;
+  };
+
+  // Initialize Leaflet map once
+  useEffect(() => {
+    if (!mapElRef.current || mapRef.current) return;
+
+    const map = L.map(mapElRef.current, {
+      zoomControl: false,
+      minZoom: 3,
+      maxZoom: 12,
+      preferCanvas: true,
+    }).setView([22.5, 82.5], 5);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      className: "map-tiles-dark",
+    }).addTo(map);
+
+    const markersLayer = L.layerGroup().addTo(map);
+    markersLayerRef.current = markersLayer;
+    mapRef.current = map;
+
+    return () => {
+      markersLayer.clearLayers();
+      map.remove();
+      mapRef.current = null;
+      markersLayerRef.current = null;
+    };
+  }, []);
+
+  // Rebuild markers when filter changes
+  useEffect(() => {
+    const map = mapRef.current;
+    const layer = markersLayerRef.current;
+    if (!map || !layer) return;
+
+    layer.clearLayers();
+
+    filteredSpecies.forEach((species) => {
+      const marker = L.marker(species.coordinates, {
+        icon: createCustomIcon(species),
+      });
+
+      marker.bindPopup(buildPopupHtml(species), {
+        className: "wildlife-popup",
+        closeButton: true,
+        autoPan: true,
+      });
+
+      marker.on("click", () => {
+        handleMarkerClick(species);
+      });
+
+      marker.addTo(layer);
+    });
+  }, [filteredSpecies]);
+
+  // Fly-to on internal state changes
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    map.flyTo(mapCenter, mapZoom, { duration: 1.5 });
+  }, [mapCenter, mapZoom]);
+
+  // Fly-to when selection changes from outside (e.g., sidebar quick access)
+  useEffect(() => {
+    if (!selectedSpecies) return;
+    setMapCenter(selectedSpecies.coordinates);
+    setMapZoom(8);
+  }, [selectedSpecies]);
+
   return (
     <div className="w-full h-full relative">
-      <MapContainer
-        center={[22.5, 82.5]}
-        zoom={5}
-        className="w-full h-full"
-        style={{ background: "#1a2f1a" }}
-        zoomControl={false}
-        minZoom={3}
-        maxZoom={12}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          className="map-tiles-dark"
-        />
-        
-        <MapController center={mapCenter} zoom={mapZoom} />
-        
-        {filteredSpecies.map((species) => (
-          <Marker
-            key={species.id}
-            position={species.coordinates}
-            icon={createCustomIcon(species)}
-            eventHandlers={{
-              click: () => handleMarkerClick(species),
-            }}
-          >
-            <Popup className="wildlife-popup">
-              <div className="p-1" style={{ minWidth: "200px" }}>
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-2xl">{species.icon}</span>
-                  <div>
-                    <h3 className="font-bold text-base text-gray-900">{species.name}</h3>
-                    <p className="text-xs italic text-gray-600">{species.scientificName}</p>
-                  </div>
-                </div>
-                <div className="space-y-1 text-sm">
-                  <p className="text-gray-700">
-                    <strong>Location:</strong> {species.location}
-                  </p>
-                  <p className="text-gray-700">
-                    <strong>Population:</strong> ~{species.population.toLocaleString()}
-                  </p>
-                  <p className="flex items-center gap-1">
-                    <strong>Status:</strong>
-                    <span 
-                      className="px-2 py-0.5 text-xs font-medium text-white"
-                      style={{ backgroundColor: getStatusColor(species.status) }}
-                    >
-                      {species.status}
-                    </span>
-                  </p>
-                </div>
-              </div>
-            </Popup>
-          </Marker>
-        ))}
-      </MapContainer>
+      <div ref={mapElRef} className="w-full h-full" style={{ background: "#1a2f1a" }} />
 
       {/* Custom CSS for dark map tiles */}
       <style>{`
