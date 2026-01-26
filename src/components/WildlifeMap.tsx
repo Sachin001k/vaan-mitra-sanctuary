@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -378,7 +378,6 @@ interface WildlifeMapProps {
 }
 
 const WildlifeMap = ({ filter, onSpeciesSelect, selectedSpecies }: WildlifeMapProps) => {
-  const mapRef = useRef<L.Map | null>(null);
   const [mapCenter, setMapCenter] = useState<[number, number]>([22.5, 82.5]);
   const [mapZoom, setMapZoom] = useState(5);
 
@@ -413,7 +412,6 @@ const WildlifeMap = ({ filter, onSpeciesSelect, selectedSpecies }: WildlifeMapPr
         zoom={5}
         className="w-full h-full"
         style={{ background: "#1a2f1a" }}
-        ref={mapRef}
         zoomControl={false}
         minZoom={3}
         maxZoom={12}
