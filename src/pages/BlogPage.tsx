@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useMemo, useState } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Calendar, Clock, ArrowRight, Tag } from "lucide-react";
@@ -80,8 +81,16 @@ const categories = [
 ];
 
 const BlogPage = () => {
+  const [selectedCategory, setSelectedCategory] = useState("All Posts");
   const featuredPosts = blogPosts.filter((post) => post.featured);
   const regularPosts = blogPosts.filter((post) => !post.featured);
+  const filteredPosts = useMemo(
+    () =>
+      selectedCategory === "All Posts"
+        ? regularPosts
+        : regularPosts.filter((post) => post.category === selectedCategory),
+    [regularPosts, selectedCategory]
+  );
 
   return (
     <div className="min-h-screen bg-background">
@@ -183,12 +192,19 @@ const BlogPage = () => {
                 </h3>
                 <ul className="space-y-2">
                   {categories.map((cat) => (
-                    <li key={cat.name}>
-                      <button className="w-full text-left px-4 py-3 bg-jungle-deep hover:bg-jungle-medium transition-colors flex justify-between items-center">
-                        <span className="text-sm text-ivory">{cat.name}</span>
-                        <span className="text-xs text-muted-foreground">{cat.count}</span>
-                      </button>
-                    </li>
+                  <li key={cat.name}>
+                    <button
+                      onClick={() => setSelectedCategory(cat.name)}
+                      className={`w-full text-left px-4 py-3 flex justify-between items-center transition-colors ${
+                        selectedCategory === cat.name
+                          ? "bg-jungle-amazon text-ivory"
+                          : "bg-jungle-deep hover:bg-jungle-medium text-muted-foreground"
+                      }`}
+                    >
+                      <span className="text-sm">{cat.name}</span>
+                      <span className="text-xs">{cat.count}</span>
+                    </button>
+                  </li>
                   ))}
                 </ul>
               </div>
@@ -197,7 +213,7 @@ const BlogPage = () => {
             {/* Posts Grid */}
             <div className="lg:col-span-3">
               <div className="grid md:grid-cols-2 gap-6">
-                {regularPosts.map((post, index) => (
+                {filteredPosts.map((post, index) => (
                   <motion.article
                     key={post.id}
                     initial={{ opacity: 0, y: 30 }}

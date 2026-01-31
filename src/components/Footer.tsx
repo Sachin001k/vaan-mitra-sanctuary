@@ -21,7 +21,19 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* About */}
           <div>
-            <h3 className="font-display text-xl text-ivory mb-4">Vaan Mitra</h3>
+            <div className="flex items-center gap-3 mb-4">
+              <img
+                src="/logo.png"
+                alt="Vaan Mitra logo"
+                className="h-12 w-12 object-contain"
+              />
+              <div>
+                <h3 className="font-display text-xl text-ivory">Vaan Mitra</h3>
+                <p className="text-muted-foreground text-xs uppercase tracking-[0.4em]">
+                  Wildlife Conservation
+                </p>
+              </div>
+            </div>
             <p className="text-muted-foreground text-sm leading-relaxed">
               A network of young conservationists, scientists, and NGOs working 
               together to protect wildlife and mitigate human-animal conflict 

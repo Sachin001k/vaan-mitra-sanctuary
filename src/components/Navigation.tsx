@@ -2,7 +2,6 @@ import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import logo from "@/assets/logo.png";
 
 const navItems = [
   { path: "/", label: "Home" },
@@ -25,7 +24,11 @@ const Navigation = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
-            <img src={logo} alt="Vaan Mitra" className="h-12 w-12 object-contain" />
+            <img
+              src="/logo.png"
+              alt="Vaan Mitra logo"
+              className="h-12 w-12 object-contain"
+            />
             <span className="font-display text-xl font-bold text-ivory">
               Vaan Mitra
             </span>

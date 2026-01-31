@@ -317,7 +317,7 @@ export const wildlifeData: WildlifeSpecies[] = [
 ];
 
 // Create custom marker icon
-const createCustomIcon = (species: WildlifeSpecies) => {
+const createCustomIcon = (species: WildlifeSpecies, imageUrl?: string) => {
   return L.divIcon({
     className: "custom-wildlife-marker",
     html: `
@@ -326,20 +326,25 @@ const createCustomIcon = (species: WildlifeSpecies) => {
         height: 52px;
         position: relative;
       ">
-        <div style="
-          width: 44px;
-          height: 44px;
-          background: linear-gradient(135deg, ${species.color}, ${species.color}dd);
-          border: 3px solid #1a2f1a;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 22px;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-          position: relative;
-        ">
-          ${species.icon}
-        </div>
+          <div style="
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, ${species.color}, ${species.color}dd);
+            border: 3px solid #1a2f1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            position: relative;
+            overflow: hidden;
+          ">
+            ${
+              imageUrl
+                ? `<img src="${imageUrl}" alt="${species.name}" style="width: 100%; height: 100%; object-fit: cover;" />`
+                : species.icon
+            }
+          </div>
         <div style="
           position: absolute;
           bottom: 0;
@@ -359,13 +364,35 @@ const createCustomIcon = (species: WildlifeSpecies) => {
   });
 };
 
+export interface GbifOccurrence {
+  key: number;
+  scientificName?: string;
+  vernacularName?: string;
+  decimalLatitude?: number;
+  decimalLongitude?: number;
+  locality?: string;
+  country?: string;
+  eventDate?: string;
+  references?: string;
+  license?: string;
+  media?: { identifier?: string }[];
+}
+
 interface WildlifeMapProps {
   filter: string;
   onSpeciesSelect: (species: WildlifeSpecies | null) => void;
   selectedSpecies: WildlifeSpecies | null;
+  gbifRecords?: GbifOccurrence[];
+  speciesImages?: Record<string, string | undefined>;
 }
 
-const WildlifeMap = ({ filter, onSpeciesSelect, selectedSpecies }: WildlifeMapProps) => {
+const WildlifeMap = ({
+  filter,
+  onSpeciesSelect,
+  selectedSpecies,
+  gbifRecords,
+  speciesImages = {},
+}: WildlifeMapProps) => {
   const mapElRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<L.Map | null>(null);
   const markersLayerRef = useRef<L.LayerGroup | null>(null);
@@ -422,8 +449,22 @@ const WildlifeMap = ({ filter, onSpeciesSelect, selectedSpecies }: WildlifeMapPr
             <span style="display:inline-block; padding: 2px 8px; font-size: 11px; font-weight: 600; color: #fff; background: ${statusColor};">
               ${species.status}
             </span>
-          </div>
         </div>
+      </div>
+    </div>
+  `;
+};
+
+  const buildGbifPopup = (record: GbifOccurrence) => {
+    const title = record.vernacularName || record.scientificName || "GBIF occurrence";
+    const description = record.scientificName ? `<em>${record.scientificName}</em>` : "";
+    return `
+      <div style="font-family: inherit; min-width: 200px;">
+        <p style="font-weight: 600; margin-bottom: 6px;">${title}</p>
+        ${description ? `<p style="margin: 0 0 6px;">${description}</p>` : ""}
+        <p style="margin: 0; font-size: 12px; color: #f1f5f9;"><strong>Location:</strong> ${record.locality || record.country || "Coordinates"}</p>
+        ${record.eventDate ? `<p style="margin: 0; font-size: 12px;"><strong>Date:</strong> ${record.eventDate}</p>` : ""}
+        ${record.references ? `<p style="margin: 6px 0 0;"><a href="${record.references}" target="_blank" rel="noreferrer" style="color: #38bdf8;">View GBIF record</a></p>` : ""}
       </div>
     `;
   };
@@ -464,9 +505,10 @@ const WildlifeMap = ({ filter, onSpeciesSelect, selectedSpecies }: WildlifeMapPr
 
     layer.clearLayers();
 
-    filteredSpecies.forEach((species) => {
+  filteredSpecies.forEach((species) => {
+      const imageUrl = speciesImages?.[species.name];
       const marker = L.marker(species.coordinates, {
-        icon: createCustomIcon(species),
+        icon: createCustomIcon(species, imageUrl),
       });
 
       marker.bindPopup(buildPopupHtml(species), {
@@ -481,7 +523,24 @@ const WildlifeMap = ({ filter, onSpeciesSelect, selectedSpecies }: WildlifeMapPr
 
       marker.addTo(layer);
     });
-  }, [filteredSpecies]);
+
+    gbifRecords?.forEach((record) => {
+      if (record.decimalLatitude == null || record.decimalLongitude == null) return;
+      const marker = L.circleMarker([record.decimalLatitude, record.decimalLongitude], {
+        radius: 8,
+        color: "#22d3ee",
+        fillColor: "#22d3ee",
+        fillOpacity: 0.95,
+        weight: 2,
+      });
+
+      marker.bindPopup(buildGbifPopup(record), {
+        className: "wildlife-popup",
+      });
+
+      marker.addTo(layer);
+    });
+  }, [filteredSpecies, gbifRecords, speciesImages]);
 
   // Fly-to on internal state changes
   useEffect(() => {

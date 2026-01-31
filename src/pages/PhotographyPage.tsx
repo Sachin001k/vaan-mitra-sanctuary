@@ -3,28 +3,46 @@ import { motion, AnimatePresence } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { X, MapPin } from "lucide-react";
-import tigerImage from "@/assets/tiger.jpg";
-import elephantImage from "@/assets/elephant.jpg";
-import eagleImage from "@/assets/eagle.jpg";
-import rhinoImage from "@/assets/rhino.jpg";
-import snowLeopardImage from "@/assets/snow-leopard.jpg";
-import langurImage from "@/assets/langur.jpg";
-import heroForest from "@/assets/hero-forest.jpg";
+import { useQueries } from "@tanstack/react-query";
 
-const photos = [
-  { id: 1, src: tigerImage, species: "Bengal Tiger", location: "Jim Corbett National Park", photographer: "Vaan Mitra Team" },
-  { id: 2, src: elephantImage, species: "Asian Elephant", location: "Kaziranga National Park", photographer: "Vaan Mitra Team" },
-  { id: 3, src: eagleImage, species: "Crested Serpent Eagle", location: "Western Ghats", photographer: "Vaan Mitra Team" },
-  { id: 4, src: rhinoImage, species: "Greater One-Horned Rhino", location: "Kaziranga, Assam", photographer: "Vaan Mitra Team" },
-  { id: 5, src: snowLeopardImage, species: "Snow Leopard", location: "Hemis, Ladakh", photographer: "Vaan Mitra Team" },
-  { id: 6, src: langurImage, species: "Gray Langur", location: "Ranthambore", photographer: "Vaan Mitra Team" },
-  { id: 7, src: heroForest, species: "Tropical Rainforest", location: "Western Ghats", photographer: "Vaan Mitra Team" },
-  { id: 8, src: tigerImage, species: "Bengal Tiger", location: "Sundarbans", photographer: "Vaan Mitra Team" },
-  { id: 9, src: elephantImage, species: "Asian Elephant", location: "Periyar, Kerala", photographer: "Vaan Mitra Team" },
+const photoSpecies = [
+  { id: 1, species: "Bengal Tiger", slug: "Bengal_tiger", location: "Jim Corbett National Park" },
+  { id: 2, species: "Asian Elephant", slug: "Indian_elephant", location: "Kaziranga National Park" },
+  { id: 3, species: "Crested Serpent Eagle", slug: "Crested_serpent_eagle", location: "Western Ghats" },
+  { id: 4, species: "Greater One-Horned Rhino", slug: "Indian_rhinoceros", location: "Kaziranga, Assam" },
+  { id: 5, species: "Snow Leopard", slug: "Snow_leopard", location: "Hemis, Ladakh" },
+  { id: 6, species: "Gray Langur", slug: "Gray_langur", location: "Ranthambore" },
+  { id: 7, species: "Tropical Rainforest", slug: "Tropical_rainforest", location: "Western Ghats" },
+  { id: 8, species: "King Cobra", slug: "King_cobra", location: "South India" },
+  { id: 9, species: "Sloth Bear", slug: "Sloth_bear", location: "Satpura Tiger Reserve" },
 ];
 
+const fetchWikiSummary = async (slug: string) => {
+  const response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(slug)}`);
+  if (!response.ok) {
+    throw new Error("Unable to fetch wiki summary");
+  }
+  return response.json();
+};
+
 const PhotographyPage = () => {
-  const [selectedPhoto, setSelectedPhoto] = useState<typeof photos[0] | null>(null);
+  const [selectedPhoto, setSelectedPhoto] = useState<null | (typeof photoSpecies)[0] & { thumbnail?: string }>(
+    null,
+  );
+
+  const wikiQueries = useQueries({
+    queries: photoSpecies.map((shot) => ({
+      queryKey: ["photo", shot.slug],
+      queryFn: () => fetchWikiSummary(shot.slug),
+      staleTime: 1000 * 60 * 10,
+    })),
+  });
+
+  const enrichedPhotos = photoSpecies.map((photo, index) => ({
+    ...photo,
+    thumbnail: wikiQueries[index]?.data?.thumbnail?.source,
+    photographer: "Vaan Mitra Team",
+  }));
 
   return (
     <div className="min-h-screen bg-jungle-darkest">
@@ -56,8 +74,16 @@ const PhotographyPage = () => {
       {/* Gallery Grid */}
       <section className="py-12 px-6">
         <div className="max-w-7xl mx-auto">
+          <div className="flex justify-between items-center mb-4">
+            <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">
+              Wikipedia-sourced imagery
+            </p>
+            {wikiQueries.some((query) => query.isLoading) && (
+              <p className="text-xs text-muted-foreground">Loading imagery…</p>
+            )}
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
-            {photos.map((photo, index) => (
+            {enrichedPhotos.map((photo, index) => (
               <motion.div
                 key={photo.id}
                 initial={{ opacity: 0 }}
@@ -67,11 +93,17 @@ const PhotographyPage = () => {
                 onClick={() => setSelectedPhoto(photo)}
                 className="relative aspect-square cursor-pointer group overflow-hidden"
               >
-                <img
-                  src={photo.src}
-                  alt={photo.species}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
+                {photo.thumbnail ? (
+                  <img
+                    src={photo.thumbnail}
+                    alt={photo.species}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-jungle-dark via-jungle-darkest to-jungle-deep flex items-center justify-center text-xs text-muted-foreground">
+                    Image pending…
+                  </div>
+                )}
                 
                 {/* Hover Overlay */}
                 <div className="absolute inset-0 bg-jungle-darkest/0 group-hover:bg-jungle-darkest/70 transition-all duration-300 flex items-end">
@@ -114,11 +146,17 @@ const PhotographyPage = () => {
                   <X size={32} />
                 </button>
                 
-                <img
-                  src={selectedPhoto.src}
-                  alt={selectedPhoto.species}
-                  className="w-full h-auto max-h-[70vh] object-contain"
-                />
+                {selectedPhoto.thumbnail ? (
+                  <img
+                    src={selectedPhoto.thumbnail}
+                    alt={selectedPhoto.species}
+                    className="w-full h-auto max-h-[70vh] object-contain"
+                  />
+                ) : (
+                  <div className="w-full h-auto max-h-[70vh] flex items-center justify-center bg-jungle-dark text-xs text-muted-foreground">
+                    Image coming from Wikipedia…
+                  </div>
+                )}
                 
                 <div className="bg-jungle-dark p-6 mt-0">
                   <h3 className="font-display text-2xl text-ivory">
@@ -140,24 +178,9 @@ const PhotographyPage = () => {
         )}
       </AnimatePresence>
 
-      {/* CTA */}
-      <section className="py-20 px-6 bg-jungle-deep border-t border-jungle-medium/30">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="font-display text-3xl text-ivory mb-4">
-            Share Your Wildlife Photographs
-          </h2>
-          <p className="text-muted-foreground mb-8">
-            Are you a wildlife photographer? Submit your work to be featured in our gallery.
-          </p>
-          <button className="btn-hero">
-            Submit Photography
-          </button>
-        </div>
-      </section>
-
-      <Footer />
-    </div>
-  );
+    <Footer />
+  </div>
+);
 };
 
 export default PhotographyPage;
