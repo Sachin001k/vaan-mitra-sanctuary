@@ -168,7 +168,7 @@ const PhotographyPage = () => {
                       {selectedPhoto.location}
                     </p>
                     <p className="text-muted-foreground">
-                      📷 {selectedPhoto.photographer}
+                      📷 Vaan Mitra Team
                     </p>
                   </div>
                 </div>
