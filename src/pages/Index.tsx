@@ -1,112 +1,154 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Globe, Binoculars, Heart } from "lucide-react";
-import heroForest from "@/assets/hero-forest.jpg";
+import { ArrowRight, Globe, Binoculars, Heart, Play } from "lucide-react";
 import tigerImage from "@/assets/tiger.jpg";
 import elephantImage from "@/assets/elephant.jpg";
 import eagleImage from "@/assets/eagle.jpg";
 import AnimatedCounter from "@/components/AnimatedCounter";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import VideoHero from "@/components/VideoHero";
+import AmbientSound from "@/components/AmbientSound";
+
+// YouTube video IDs for hero background
+const heroVideos = [
+  {
+    youtubeId: "ZSMsuqBciGo", // Tiger documentary footage
+    fallbackImage: tigerImage,
+    label: "Bengal Tiger",
+  },
+  {
+    youtubeId: "BY9outjlQfo", // Elephant footage
+    fallbackImage: elephantImage,
+    label: "Asian Elephant",
+  },
+  {
+    youtubeId: "sRWcJrMTtMI", // Wildlife footage
+    fallbackImage: eagleImage,
+    label: "Wildlife of India",
+  },
+];
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
+      
+      {/* Ambient Jungle Sound Controller */}
+      <AmbientSound 
+        audioUrl="https://cdn.pixabay.com/download/audio/2022/03/10/audio_5f4ce1c24d.mp3"
+        defaultVolume={0.25}
+      />
 
-      {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0">
-          <img
-            src={heroForest}
-            alt="Tropical rainforest"
-            className="w-full h-full object-cover animate-breathe"
-          />
-          <div className="image-overlay" />
-        </div>
+      {/* Hero Section with Video Background */}
+      <VideoHero 
+        videos={heroVideos}
+        switchInterval={25000}
+        className="h-screen"
+        showControls={true}
+      >
+        <section className="h-screen flex items-center justify-center">
+          {/* Floating particles effect */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {[...Array(30)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-1 h-1 bg-jungle-canopy/30"
+                initial={{
+                  x: Math.random() * (typeof window !== "undefined" ? window.innerWidth : 1000),
+                  y: -10,
+                }}
+                animate={{
+                  y: (typeof window !== "undefined" ? window.innerHeight : 800) + 10,
+                  x: `+=${Math.random() * 100 - 50}`,
+                }}
+                transition={{
+                  duration: 12 + Math.random() * 10,
+                  repeat: Infinity,
+                  delay: Math.random() * 10,
+                  ease: "linear",
+                }}
+              />
+            ))}
+          </div>
 
-        {/* Floating particles effect */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(20)].map((_, i) => (
+          {/* Hero Content */}
+          <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
             <motion.div
-              key={i}
-              className="absolute w-1 h-1 bg-jungle-canopy/40"
-              initial={{
-                x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1000),
-                y: -10,
-              }}
-              animate={{
-                y: (typeof window !== 'undefined' ? window.innerHeight : 800) + 10,
-                x: `+=${Math.random() * 100 - 50}`,
-              }}
-              transition={{
-                duration: 10 + Math.random() * 10,
-                repeat: Infinity,
-                delay: Math.random() * 10,
-                ease: "linear",
-              }}
-            />
-          ))}
-        </div>
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <p className="text-jungle-canopy uppercase tracking-[0.3em] text-sm mb-6 font-medium">
+                Conservation Through Connection
+              </p>
+            </motion.div>
 
-        {/* Hero Content */}
-        <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
+            <motion.h1
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="font-display text-4xl md:text-6xl lg:text-7xl text-ivory leading-tight mb-8 drop-shadow-2xl"
+            >
+              Where forest songs and footsteps blend,
+              <br />
+              <span className="text-gradient-jungle">we walk the wild;</span>
+              <br />
+              we call it friend.
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="text-lg text-ivory/90 max-w-2xl mx-auto mb-12 drop-shadow-lg"
+            >
+              A network of 15+ young conservationists, scientists, and NGOs
+              protecting wildlife through technology-driven solutions since 2024.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center"
+            >
+              <Link to="/raptor" className="btn-hero flex items-center gap-2">
+                <Binoculars size={18} />
+                Explore Wildlife
+              </Link>
+              <Link to="/maps" className="btn-ghost flex items-center gap-2">
+                <Globe size={18} />
+                View Global Map
+              </Link>
+              <Link to="/donate" className="btn-ghost flex items-center gap-2">
+                <Heart size={18} />
+                Join the Cause
+              </Link>
+            </motion.div>
+          </div>
+
+          {/* Scroll indicator */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 2, duration: 1 }}
+            className="absolute bottom-24 left-1/2 -translate-x-1/2"
           >
-            <p className="text-jungle-canopy uppercase tracking-[0.3em] text-sm mb-6">
-              Conservation Through Connection
-            </p>
+            <motion.div
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="w-6 h-10 border-2 border-ivory/40 flex items-start justify-center p-2"
+            >
+              <motion.div
+                animate={{ height: ["0%", "40%", "0%"] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="w-1 bg-jungle-canopy"
+              />
+            </motion.div>
           </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="font-display text-4xl md:text-6xl lg:text-7xl text-ivory leading-tight mb-8"
-          >
-            Where forest songs and footsteps blend,
-            <br />
-            <span className="text-gradient-jungle">we walk the wild;</span>
-            <br />
-            we call it friend.
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-lg text-ivory/80 max-w-2xl mx-auto mb-12"
-          >
-            A network of 15+ young conservationists, scientists, and NGOs 
-            protecting wildlife through technology-driven solutions since 2024.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-          >
-            <Link to="/raptor" className="btn-hero flex items-center gap-2">
-              <Binoculars size={18} />
-              Explore Wildlife
-            </Link>
-            <Link to="/maps" className="btn-ghost flex items-center gap-2">
-              <Globe size={18} />
-              View Global Map
-            </Link>
-            <Link to="/donate" className="btn-ghost flex items-center gap-2">
-              <Heart size={18} />
-              Join the Cause
-            </Link>
-          </motion.div>
-        </div>
-
-      </section>
+        </section>
+      </VideoHero>
 
       {/* Mission Section */}
       <section className="py-24 px-6 bg-jungle-dark">
@@ -122,9 +164,9 @@ const Index = () => {
               Our Mission
             </h2>
             <p className="text-muted-foreground max-w-3xl mx-auto text-lg">
-              Vaan Mitra Foundation was born in 2024 as a project to protect wildlife 
-              and the jungle. Registered as an NGO in 2025, we now work with 
-              conservationists, scientists, government officials, and other NGOs to 
+              Vaan Mitra Foundation was born in 2024 as a project to protect wildlife
+              and the jungle. Registered as an NGO in 2025, we now work with
+              conservationists, scientists, government officials, and other NGOs to
               create lasting change.
             </p>
           </motion.div>
@@ -132,19 +174,22 @@ const Index = () => {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                icon: "🐯",
+                image: tigerImage,
                 title: "Wildlife Protection",
-                description: "Direct action to protect endangered species through patrols, monitoring, and rescue operations.",
+                description:
+                  "Direct action to protect endangered species through patrols, monitoring, and rescue operations.",
               },
               {
-                icon: "🤝",
+                image: elephantImage,
                 title: "Human-Animal Conflict Mitigation",
-                description: "Working with communities to create sustainable coexistence between humans and wildlife.",
+                description:
+                  "Working with communities to create sustainable coexistence between humans and wildlife.",
               },
               {
-                icon: "💻",
+                image: eagleImage,
                 title: "Technology-Driven Conservation",
-                description: "Using cutting-edge technology like AI, drones, and tracking systems to protect species.",
+                description:
+                  "Using cutting-edge technology like AI, drones, and tracking systems to protect species.",
               },
             ].map((item, index) => (
               <motion.div
@@ -153,9 +198,17 @@ const Index = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="stat-card group hover:border-jungle-amazon transition-all duration-300"
+                className="stat-card group hover:border-jungle-amazon transition-all duration-300 overflow-hidden"
               >
-                <div className="text-5xl mb-6">{item.icon}</div>
+                {/* Real animal image instead of emoji */}
+                <div className="relative h-40 -mx-8 -mt-8 mb-6 overflow-hidden">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-jungle-deep to-transparent" />
+                </div>
                 <h3 className="font-display text-xl text-ivory mb-4">{item.title}</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">
                   {item.description}
@@ -236,8 +289,8 @@ const Index = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <p className="text-red-400 uppercase tracking-widest text-sm mb-2 flex items-center justify-center gap-2">
-              <span className="w-2 h-2 bg-red-500 animate-pulse" />
+            <p className="text-destructive uppercase tracking-widest text-sm mb-2 flex items-center justify-center gap-2">
+              <span className="w-2 h-2 bg-destructive animate-pulse" />
               Live Counter
             </p>
             <h2 className="font-display text-4xl md:text-5xl text-ivory">
@@ -252,7 +305,7 @@ const Index = () => {
               </p>
               <AnimatedCounter
                 end={38247}
-                className="font-display text-4xl text-red-400"
+                className="font-display text-4xl text-destructive"
               />
             </div>
             <div className="stat-card">
@@ -261,7 +314,7 @@ const Index = () => {
               </p>
               <AnimatedCounter
                 end={543}
-                className="font-display text-4xl text-orange-400"
+                className="font-display text-4xl text-jungle-tropical"
               />
             </div>
             <div className="stat-card">
@@ -271,7 +324,7 @@ const Index = () => {
               <AnimatedCounter
                 end={4200000}
                 suffix="+"
-                className="font-display text-4xl text-amber-400"
+                className="font-display text-4xl text-jungle-amazon"
               />
             </div>
             <div className="stat-card border-jungle-amazon">
@@ -309,7 +362,7 @@ const Index = () => {
               Every Voice Matters
             </h2>
             <p className="text-lg text-ivory/80 mb-10 max-w-2xl mx-auto">
-              Join the movement. Whether you donate, volunteer, or simply spread 
+              Join the movement. Whether you donate, volunteer, or simply spread
               awareness—your action creates ripples that can save species.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
