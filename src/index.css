@@ -232,6 +232,48 @@
     0%, 100% { box-shadow: 0 0 20px hsl(var(--jungle-tropical) / 0.3); }
     50% { box-shadow: 0 0 40px hsl(var(--jungle-tropical) / 0.6); }
   }
+
+  /* Indian-inspired decorative wiggle */
+  .animate-wiggle {
+    animation: wiggle 2.5s ease-in-out infinite;
+  }
+
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(3deg); }
+    75% { transform: rotate(-3deg); }
+  }
+
+  /* Rangoli spin */
+  .animate-rangoli-spin {
+    animation: rangoliSpin 20s linear infinite;
+  }
+
+  @keyframes rangoliSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* Leaf sway animation */
+  .animate-leaf-sway {
+    animation: leafSway 4s ease-in-out infinite;
+  }
+
+  @keyframes leafSway {
+    0%, 100% { transform: rotate(-5deg) translateX(0); }
+    50% { transform: rotate(5deg) translateX(5px); }
+  }
+
+  /* Firefly glow */
+  .animate-firefly {
+    animation: firefly 3s ease-in-out infinite alternate;
+  }
+
+  @keyframes firefly {
+    0% { opacity: 0.2; transform: translate(0, 0) scale(0.8); }
+    50% { opacity: 1; transform: translate(10px, -15px) scale(1.2); }
+    100% { opacity: 0.3; transform: translate(-5px, 5px) scale(0.9); }
+  }
   
   /* Counter tick animation */
   .animate-counter {

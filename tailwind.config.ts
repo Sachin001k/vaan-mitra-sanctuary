@@ -105,6 +105,15 @@ export default {
           "0%, 100%": { boxShadow: "0 0 20px hsl(135 38% 40% / 0.3)" },
           "50%": { boxShadow: "0 0 40px hsl(135 38% 40% / 0.6)" },
         },
+        wiggle: {
+          "0%, 100%": { transform: "rotate(0deg)" },
+          "25%": { transform: "rotate(3deg)" },
+          "75%": { transform: "rotate(-3deg)" },
+        },
+        leafSway: {
+          "0%, 100%": { transform: "rotate(-5deg) translateX(0)" },
+          "50%": { transform: "rotate(5deg) translateX(5px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -112,6 +121,8 @@ export default {
         breathe: "breathe 4s ease-in-out infinite",
         float: "float 6s ease-in-out infinite",
         "pulse-glow": "pulseGlow 2s ease-in-out infinite",
+        wiggle: "wiggle 2.5s ease-in-out infinite",
+        "leaf-sway": "leafSway 4s ease-in-out infinite",
       },
     },
   },

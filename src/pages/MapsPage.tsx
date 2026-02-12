@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import WildlifeMap, { wildlifeData, WildlifeSpecies } from "@/components/WildlifeMap";
+import NationalParkMaps from "@/components/NationalParkMaps";
 import { MapPin, Filter, Info, X } from "lucide-react";
 
 const wildlifeCategories = [
@@ -366,6 +367,9 @@ const MapsPage = () => {
           </div>
         </div>
       </section>
+
+      {/* Animated National Park Maps */}
+      <NationalParkMaps />
 
       {/* Live GBIF Feed */}
       <section className="py-12 px-6 bg-jungle-darkest border-t border-jungle-medium/20">

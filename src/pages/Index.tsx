@@ -277,6 +277,51 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Rangoli Divider */}
+      <div className="relative py-6 bg-jungle-darkest overflow-hidden">
+        <div className="flex items-center justify-center gap-4">
+          <div className="h-px flex-1 max-w-[200px] bg-gradient-to-r from-transparent to-jungle-canopy/40" />
+          <motion.div
+            className="text-2xl animate-rangoli-spin"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          >
+            ✦
+          </motion.div>
+          <motion.div className="text-jungle-canopy text-lg animate-wiggle">❋</motion.div>
+          <motion.div
+            className="text-2xl animate-rangoli-spin"
+            animate={{ rotate: -360 }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          >
+            ✦
+          </motion.div>
+          <div className="h-px flex-1 max-w-[200px] bg-gradient-to-l from-transparent to-jungle-canopy/40" />
+        </div>
+        {/* Floating fireflies */}
+        {[...Array(8)].map((_, i) => (
+          <motion.div
+            key={`firefly-${i}`}
+            className="absolute w-1.5 h-1.5 bg-yellow-400/60"
+            style={{
+              left: `${10 + Math.random() * 80}%`,
+              top: `${10 + Math.random() * 80}%`,
+            }}
+            animate={{
+              opacity: [0.2, 1, 0.2],
+              scale: [0.8, 1.3, 0.8],
+              x: [0, (Math.random() - 0.5) * 30, 0],
+              y: [0, (Math.random() - 0.5) * 20, 0],
+            }}
+            transition={{
+              duration: 2 + Math.random() * 2,
+              repeat: Infinity,
+              delay: Math.random() * 2,
+            }}
+          />
+        ))}
+      </div>
+
       {/* Mission Section with Wikipedia Images */}
       <section className="py-24 px-6 bg-jungle-darkest">
         <div className="max-w-7xl mx-auto">
@@ -337,6 +382,15 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Leaf Divider */}
+      <div className="relative py-4 bg-jungle-deep overflow-hidden flex items-center justify-center gap-6">
+        <motion.span className="text-2xl animate-leaf-sway" style={{ animationDelay: "0s" }}>🍃</motion.span>
+        <motion.span className="text-xl animate-leaf-sway" style={{ animationDelay: "0.5s" }}>🌿</motion.span>
+        <motion.span className="text-2xl animate-leaf-sway" style={{ animationDelay: "1s" }}>🍃</motion.span>
+        <motion.span className="text-xl animate-leaf-sway" style={{ animationDelay: "1.5s" }}>🌿</motion.span>
+        <motion.span className="text-2xl animate-leaf-sway" style={{ animationDelay: "2s" }}>🍃</motion.span>
+      </div>
 
       {/* Featured Species with Wikipedia Images */}
       <section className="py-24 px-6 bg-jungle-deep">
