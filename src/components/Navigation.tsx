@@ -9,6 +9,7 @@ const navItems = [
   { path: "/maps", label: "Maps" },
   { path: "/impact", label: "Impact" },
   { path: "/photography", label: "Photography" },
+  { path: "/team", label: "Team" },
   { path: "/blog", label: "Blog" },
   { path: "/donate", label: "Aawaz Do" },
   { path: "/contact", label: "Contact" },
