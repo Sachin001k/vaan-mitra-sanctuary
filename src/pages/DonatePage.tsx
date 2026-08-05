@@ -261,7 +261,7 @@ const DonatePage = () => {
       <section className="py-12 px-6 bg-jungle-deep border-t border-jungle-medium/30">
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-muted-foreground text-sm mb-4">
-            Vaan Mitra Foundation is a registered NGO (Reg. No: XXXXX)
+            Vann Mitra Foundation is a registered NGO (Reg. No: XXXXX)
           </p>
           <p className="text-xs text-muted-foreground">
             All donations are eligible for tax benefits under Section 80G of the Income Tax Act.

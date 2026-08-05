@@ -24,11 +24,11 @@ const Footer = () => {
             <div className="flex items-center gap-3 mb-4">
               <img
                 src="/logo.png"
-                alt="Vaan Mitra logo"
+                alt="Vann Mitra logo"
                 className="h-12 w-12 object-contain"
               />
               <div>
-                <h3 className="font-display text-xl text-ivory">Vaan Mitra</h3>
+                <h3 className="font-display text-xl text-ivory">Vann Mitra</h3>
                 <p className="text-muted-foreground text-xs uppercase tracking-[0.4em]">
                   Wildlife Conservation
                 </p>
@@ -127,7 +127,7 @@ const Footer = () => {
           </div>
 
           <p className="text-muted-foreground text-sm text-center">
-            © 2026 Vaan Mitra Foundation. All rights reserved.
+            © 2026 Vann Mitra Foundation. All rights reserved.
           </p>
         </div>
       </div>

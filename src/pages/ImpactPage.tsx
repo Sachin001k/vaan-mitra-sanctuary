@@ -2,46 +2,43 @@ import { motion } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AnimatedCounter from "@/components/AnimatedCounter";
-import { Shield, TreePine, Heart, Users, TrendingUp, Globe } from "lucide-react";
+import { Shield, TreePine, Heart, Users, Globe } from "lucide-react";
 import elephantImage from "@/assets/elephant.jpg";
 
 const ImpactPage = () => {
   const stats = [
     {
       icon: Shield,
-      value: 847,
+      value: 24,
       label: "Animals Rescued",
       description: "Direct rescue operations across India",
     },
     {
       icon: TreePine,
-      value: 12500,
+      value: 2000,
       suffix: "+",
       label: "Hectares Protected",
       description: "Critical habitat under conservation",
     },
     {
+      icon: Users,
+      value: 100000,
+      suffix: "+",
+      label: "People Reached",
+      description: "Through awareness and outreach",
+    },
+    {
       icon: Heart,
-      value: 2450000,
-      prefix: "₹",
+      value: 3.7,
+      prefix: "$",
+      suffix: "k",
+      decimals: 1,
       label: "Funds Raised",
       description: "For conservation initiatives",
     },
     {
-      icon: Users,
-      value: 45,
-      label: "Conservation Campaigns",
-      description: "Community awareness programs",
-    },
-    {
-      icon: TrendingUp,
-      value: 15,
-      label: "Partner Organizations",
-      description: "NGOs, scientists & officials",
-    },
-    {
       icon: Globe,
-      value: 8,
+      value: 6,
       label: "States Covered",
       description: "Active conservation zones",
     },
@@ -51,7 +48,7 @@ const ImpactPage = () => {
     {
       year: "2024",
       title: "Foundation Established",
-      description: "Vaan Mitra started as a conservation project with a vision to protect India's wildlife.",
+      description: "Vann Mitra started as a conservation project with a vision to protect India's wildlife.",
     },
     {
       year: "2025",
@@ -123,72 +120,13 @@ const ImpactPage = () => {
                   end={stat.value}
                   prefix={stat.prefix}
                   suffix={stat.suffix}
+                  decimals={stat.decimals}
                   className="font-display text-5xl text-ivory mb-2"
                 />
                 <h3 className="text-lg text-ivory font-semibold mb-2">{stat.label}</h3>
                 <p className="text-sm text-muted-foreground">{stat.description}</p>
               </motion.div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Live Counter Section */}
-      <section className="py-20 px-6 bg-jungle-deep border-y border-jungle-medium/30">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-jungle-amazon/20 border border-jungle-amazon/50 mb-6">
-              <span className="w-2 h-2 bg-jungle-canopy animate-pulse" />
-              <span className="text-jungle-canopy text-sm font-medium">Live Stats</span>
-            </div>
-            <h2 className="font-display text-4xl md:text-5xl text-ivory">
-              Real-Time Conservation Data
-            </h2>
-          </motion.div>
-
-          <div className="grid md:grid-cols-4 gap-6">
-            <div className="stat-card animate-pulse-glow text-center">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">
-                Animals Under Protection
-              </p>
-              <AnimatedCounter
-                end={15847}
-                className="font-display text-4xl text-jungle-canopy"
-              />
-            </div>
-            <div className="stat-card text-center">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">
-                Patrol Hours (Monthly)
-              </p>
-              <AnimatedCounter
-                end={2340}
-                className="font-display text-4xl text-ivory"
-              />
-            </div>
-            <div className="stat-card text-center">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">
-                Camera Traps Active
-              </p>
-              <AnimatedCounter
-                end={156}
-                className="font-display text-4xl text-ivory"
-              />
-            </div>
-            <div className="stat-card text-center">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">
-                Volunteers Active
-              </p>
-              <AnimatedCounter
-                end={234}
-                className="font-display text-4xl text-ivory"
-              />
-            </div>
           </div>
         </div>
       </section>

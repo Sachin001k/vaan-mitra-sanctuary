@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Shield, Zap, Wifi, Volume2, CloudRain, Battery, Cpu, Radio } from "lucide-react";
@@ -92,13 +93,20 @@ const RaptorPage = () => {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="btn-hero flex items-center justify-center gap-2">
+                <Link
+                  to="/contact"
+                  className="btn-hero flex items-center justify-center gap-2"
+                >
                   <Zap size={18} />
                   Request Demo
-                </button>
-                <button className="btn-ghost flex items-center justify-center gap-2">
+                </Link>
+                <a
+                  href="/pdf/specs.pdf"
+                  download="raptor-specs.pdf"
+                  className="btn-ghost flex items-center justify-center gap-2"
+                >
                   Download Specs
-                </button>
+                </a>
               </div>
             </motion.div>
 
@@ -350,12 +358,9 @@ const RaptorPage = () => {
               Contact us for pricing, pilot programs, and partnership opportunities.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="btn-hero">
+              <Link to="/contact" className="btn-hero">
                 Request a Demo
-              </button>
-              <button className="btn-ghost">
-                Partner With Us
-              </button>
+              </Link>
             </div>
           </motion.div>
         </div>

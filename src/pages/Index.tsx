@@ -1,105 +1,18 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Globe, Binoculars, Heart, Camera, ExternalLink } from "lucide-react";
-import { useQueries } from "@tanstack/react-query";
+import { ArrowRight, Globe, Binoculars, Heart, Camera } from "lucide-react";
 import AnimatedCounter from "@/components/AnimatedCounter";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import VideoHero from "@/components/VideoHero";
 import AmbientSound from "@/components/AmbientSound";
-
-// Wikipedia animal slugs for fetching real images
-const wikiAnimals = [
-  { slug: "Bengal_tiger", name: "Bengal Tiger", count: "3,167" },
-  { slug: "Indian_elephant", name: "Asian Elephant", count: "27,312" },
-  { slug: "Snow_leopard", name: "Snow Leopard", count: "~7,500" },
-  { slug: "Indian_rhinoceros", name: "Greater One-Horned Rhino", count: "4,014" },
-  { slug: "Asiatic_lion", name: "Asiatic Lion", count: "891" },
-  { slug: "Red_panda", name: "Red Panda", count: "~10,000" },
-];
-
-// Mission section Wikipedia slugs
-const missionAnimals = [
-  { slug: "Bengal_tiger", title: "Wildlife Protection", description: "Direct action to protect endangered species through patrols, monitoring, and rescue operations." },
-  { slug: "Indian_elephant", title: "Human-Animal Conflict Mitigation", description: "Working with communities to create sustainable coexistence between humans and wildlife." },
-  { slug: "Great_hornbill", title: "Technology-Driven Conservation", description: "Using cutting-edge technology like AI, drones, and tracking systems to protect species." },
-];
-
-// Photography section Wikipedia slugs
-const photographyAnimals = [
-  "Bengal_tiger",
-  "Asiatic_lion",
-  "Indian_elephant",
-  "Indian_rhinoceros",
-  "Snow_leopard",
-  "Red_panda",
-  "Gharial",
-  "Indian_leopard",
-  "Sloth_bear",
-  "King_cobra",
-  "Great_hornbill",
-  "Indian_peafowl",
-];
-
-const fetchWikiSummary = async (slug: string) => {
-  const response = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(slug)}`);
-  if (!response.ok) {
-    throw new Error("Unable to load Wikipedia summary");
-  }
-  return response.json();
-};
-
-// YouTube video IDs for hero background
-const heroVideos = [
-  {
-    youtubeId: "ZSMsuqBciGo",
-    label: "Bengal Tiger",
-  },
-  {
-    youtubeId: "BY9outjlQfo",
-    label: "Asian Elephant",
-  },
-  {
-    youtubeId: "sRWcJrMTtMI",
-    label: "Wildlife of India",
-  },
-];
+import {
+  photoPortfolio,
+  missionHighlights,
+  featuredSpecies,
+} from "@/data/localPhotos";
 
 const Index = () => {
-  // Fetch Wikipedia data for Featured Species
-  const featuredQueries = useQueries({
-    queries: wikiAnimals.map((animal) => ({
-      queryKey: ["wiki-featured", animal.slug],
-      queryFn: () => fetchWikiSummary(animal.slug),
-      staleTime: 1000 * 60 * 10,
-    })),
-  });
-
-  // Fetch Wikipedia data for Mission section
-  const missionQueries = useQueries({
-    queries: missionAnimals.map((animal) => ({
-      queryKey: ["wiki-mission", animal.slug],
-      queryFn: () => fetchWikiSummary(animal.slug),
-      staleTime: 1000 * 60 * 10,
-    })),
-  });
-
-  // Fetch Wikipedia data for Photography section
-  const photographyQueries = useQueries({
-    queries: photographyAnimals.map((slug) => ({
-      queryKey: ["wiki-photo", slug],
-      queryFn: () => fetchWikiSummary(slug),
-      staleTime: 1000 * 60 * 10,
-    })),
-  });
-
-  const photographyCards = photographyQueries
-    .map((result, index) => ({
-      slug: photographyAnimals[index],
-      data: result.data,
-      isLoading: result.isLoading,
-    }))
-    .filter((card) => card.data?.thumbnail?.source);
+  const photographyCards = photoPortfolio;
 
   return (
     <div className="min-h-screen bg-background">
@@ -111,40 +24,44 @@ const Index = () => {
         defaultVolume={0.25}
       />
 
-      {/* Hero Section with Video Background */}
-      <VideoHero 
-        videos={heroVideos}
-        switchInterval={25000}
-        className="h-screen"
-        showControls={true}
-      >
-        <section className="h-screen flex items-center justify-center">
-          {/* Floating particles effect */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            {[...Array(30)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-1 h-1 bg-jungle-canopy/30"
-                initial={{
-                  x: Math.random() * (typeof window !== "undefined" ? window.innerWidth : 1000),
-                  y: -10,
-                }}
-                animate={{
-                  y: (typeof window !== "undefined" ? window.innerHeight : 800) + 10,
-                  x: `+=${Math.random() * 100 - 50}`,
-                }}
-                transition={{
-                  duration: 12 + Math.random() * 10,
-                  repeat: Infinity,
-                  delay: Math.random() * 10,
-                  ease: "linear",
-                }}
-              />
-            ))}
-          </div>
+      {/* Hero Section with YouTube Video Background */}
+      <section className="relative h-screen overflow-hidden">
+        <iframe
+          src="https://www.youtube.com/embed/ZSMsuqBciGo?si=HmdYHcVQlXHe8kVV&autoplay=1&mute=1&controls=0&loop=1&playlist=ZSMsuqBciGo&modestbranding=1"
+          title="Vann Mitra Foundation Hero"
+          allow="autoplay; fullscreen; picture-in-picture"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-jungle-darkest/60 via-transparent to-jungle-darkest/90" />
+        <div className="absolute inset-0 bg-gradient-to-r from-jungle-darkest/70 via-transparent to-jungle-darkest/50" />
 
-          {/* Hero Content */}
-          <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
+        {/* Floating particles effect */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[...Array(30)].map((_, i) => (
+            <motion.div
+              key={`particle-${i}`}
+              className="absolute w-1 h-1 bg-jungle-canopy/30"
+              initial={{
+                x: Math.random() * (typeof window !== "undefined" ? window.innerWidth : 1000),
+                y: -10,
+              }}
+              animate={{
+                y: (typeof window !== "undefined" ? window.innerHeight : 800) + 10,
+                x: `+=${Math.random() * 100 - 50}`,
+              }}
+              transition={{
+                duration: 12 + Math.random() * 10,
+                repeat: Infinity,
+                delay: Math.random() * 10,
+                ease: "linear",
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Hero Content */}
+        <div className="relative z-10 h-full flex items-center justify-center">
+          <div className="text-center px-6">
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
@@ -198,8 +115,8 @@ const Index = () => {
               </Link>
             </motion.div>
           </div>
-        </section>
-      </VideoHero>
+        </div>
+      </section>
 
       {/* Photography + Species Summaries Section */}
       <section className="py-16 px-6 bg-jungle-dark border-b border-jungle-medium/20">
@@ -214,7 +131,7 @@ const Index = () => {
             <div>
               <p className="text-jungle-canopy uppercase tracking-[0.3em] text-xs mb-2 flex items-center gap-2">
                 <Camera size={14} />
-                Wikipedia Spotlights
+                Vann Mitra Spotlights
               </p>
               <h2 className="font-display text-3xl md:text-4xl text-ivory">
                 Photography + Species Summaries
@@ -231,7 +148,7 @@ const Index = () => {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {photographyCards.slice(0, 8).map((card, index) => (
               <motion.article
-                key={card.slug}
+                key={card.id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
@@ -240,31 +157,21 @@ const Index = () => {
               >
                 <div className="relative aspect-square overflow-hidden">
                   <img
-                    src={card.data.thumbnail.source}
-                    alt={card.data.title}
+                    src={card.image}
+                    alt={card.species}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-jungle-darkest/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
                 <div className="p-4">
-                  <h3 className="font-display text-lg text-ivory mb-1">{card.data.title}</h3>
-                  {card.data.description && (
-                    <p className="text-xs text-jungle-canopy uppercase tracking-wider mb-2">
-                      {card.data.description}
-                    </p>
-                  )}
-                  <p className="text-xs text-muted-foreground line-clamp-2">
-                    {card.data.extract?.slice(0, 100)}…
+                  <h3 className="font-display text-lg text-ivory mb-1">{card.species}</h3>
+                  <p className="text-xs text-jungle-canopy uppercase tracking-wider mb-2">
+                    {card.location}
                   </p>
-                  <a
-                    href={card.data.content_urls?.desktop?.page}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-3 inline-flex items-center gap-1 text-xs text-jungle-canopy hover:underline"
-                  >
-                    Read more <ExternalLink size={10} />
-                  </a>
+                  <p className="text-xs text-muted-foreground line-clamp-2">
+                    {card.summary}
+                  </p>
                 </div>
               </motion.article>
             ))}
@@ -322,7 +229,7 @@ const Index = () => {
         ))}
       </div>
 
-      {/* Mission Section with Wikipedia Images */}
+      {/* Mission Section */}
       <section className="py-24 px-6 bg-jungle-darkest">
         <div className="max-w-7xl mx-auto">
           <motion.div
@@ -336,7 +243,7 @@ const Index = () => {
               Our Mission
             </h2>
             <p className="text-muted-foreground max-w-3xl mx-auto text-lg">
-              Vaan Mitra Foundation was born in 2024 as a project to protect wildlife
+              Vann Mitra Foundation was born in 2024 as a project to protect wildlife
               and the jungle. Registered as an NGO in 2025, we now work with
               conservationists, scientists, government officials, and other NGOs to
               create lasting change.
@@ -344,41 +251,32 @@ const Index = () => {
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {missionAnimals.map((item, index) => {
-              const wikiData = missionQueries[index]?.data;
-              const imageUrl = wikiData?.thumbnail?.source;
-              
-              return (
-                <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="stat-card group hover:border-jungle-amazon transition-all duration-300 overflow-hidden"
-                >
-                  {/* Real animal image from Wikipedia API */}
-                  <div className="relative h-48 -mx-8 -mt-8 mb-6 overflow-hidden">
-                    {imageUrl ? (
-                      <img
-                        src={imageUrl}
-                        alt={item.title}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-jungle-deep flex items-center justify-center">
-                        <span className="text-muted-foreground text-sm">Loading...</span>
-                      </div>
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-jungle-deep to-transparent" />
-                  </div>
-                  <h3 className="font-display text-xl text-ivory mb-4">{item.title}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    {item.description}
-                  </p>
-                </motion.div>
-              );
-            })}
+            {missionHighlights.map((item, index) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="stat-card group hover:border-jungle-amazon transition-all duration-300 overflow-hidden"
+              >
+                <div className="relative h-48 -mx-8 -mt-8 mb-6 overflow-hidden">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-jungle-deep to-transparent" />
+                </div>
+                <h3 className="font-display text-xl text-ivory mb-2">{item.title}</h3>
+                <p className="text-xs uppercase tracking-[0.4em] text-jungle-canopy mb-3">
+                  {item.year}
+                </p>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  {item.description}
+                </p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -392,7 +290,7 @@ const Index = () => {
         <motion.span className="text-2xl animate-leaf-sway" style={{ animationDelay: "2s" }}>🍃</motion.span>
       </div>
 
-      {/* Featured Species with Wikipedia Images */}
+      {/* Featured Species */}
       <section className="py-24 px-6 bg-jungle-deep">
         <div className="max-w-7xl mx-auto">
           <motion.div
@@ -419,42 +317,31 @@ const Index = () => {
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {wikiAnimals.slice(0, 6).map((animal, index) => {
-              const wikiData = featuredQueries[index]?.data;
-              const imageUrl = wikiData?.thumbnail?.source || wikiData?.originalimage?.source;
-              
-              return (
-                <motion.div
-                  key={animal.slug}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="card-jungle group overflow-hidden"
-                >
-                  <div className="relative aspect-[4/5] overflow-hidden">
-                    {imageUrl ? (
-                      <img
-                        src={imageUrl}
-                        alt={animal.name}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-jungle-dark flex items-center justify-center">
-                        <span className="text-muted-foreground text-sm">Loading...</span>
-                      </div>
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-jungle-darkest via-transparent to-transparent opacity-80" />
-                    <div className="absolute bottom-6 left-6 right-6">
-                      <h3 className="font-display text-2xl text-ivory">{animal.name}</h3>
-                      <p className="text-jungle-canopy text-lg font-semibold">
-                        {animal.count} in the wild
-                      </p>
-                    </div>
+            {featuredSpecies.map((animal, index) => (
+              <motion.div
+                key={animal.slug}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="card-jungle group overflow-hidden"
+              >
+                <div className="relative aspect-[4/5] overflow-hidden">
+                  <img
+                    src={animal.image}
+                    alt={animal.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-jungle-darkest via-transparent to-transparent opacity-80" />
+                  <div className="absolute bottom-6 left-6 right-6">
+                    <h3 className="font-display text-2xl text-ivory">{animal.name}</h3>
+                    <p className="text-jungle-canopy text-lg font-semibold">
+                      {animal.count} in the wild
+                    </p>
                   </div>
-                </motion.div>
-              );
-            })}
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -522,17 +409,13 @@ const Index = () => {
 
       {/* CTA Section */}
       <section className="py-32 px-6 relative overflow-hidden">
-        {/* Background from Wikipedia */}
+        {/* Background from a local photograph */}
         <div className="absolute inset-0">
-          {featuredQueries[0]?.data?.thumbnail?.source ? (
-            <img
-              src={featuredQueries[0].data.thumbnail.source}
-              alt="Tiger"
-              className="w-full h-full object-cover opacity-20"
-            />
-          ) : (
-            <div className="w-full h-full bg-jungle-dark" />
-          )}
+          <img
+            src={featuredSpecies[0]?.image}
+            alt="Tiger"
+            className="w-full h-full object-cover opacity-20"
+          />
           <div className="absolute inset-0 bg-jungle-darkest/90" />
         </div>
 

@@ -27,11 +27,11 @@ const Navigation = () => {
           <Link to="/" className="flex items-center gap-3">
             <img
               src="/logo.png"
-              alt="Vaan Mitra logo"
+              alt="Vann Mitra logo"
               className="h-12 w-12 object-contain"
             />
             <span className="font-display text-xl font-bold text-ivory">
-              Vaan Mitra
+              Vann Mitra
             </span>
           </Link>
 

@@ -6,6 +6,7 @@ interface AnimatedCounterProps {
   duration?: number;
   prefix?: string;
   suffix?: string;
+  decimals?: number;
   className?: string;
 }
 
@@ -14,6 +15,7 @@ const AnimatedCounter = ({
   duration = 2,
   prefix = "",
   suffix = "",
+  decimals = 0,
   className = "",
 }: AnimatedCounterProps) => {
   const [count, setCount] = useState(0);
@@ -47,7 +49,8 @@ const AnimatedCounter = ({
       
       // Easing function for smooth animation
       const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-      setCount(Math.floor(easeOutQuart * end));
+      const multiplier = 10 ** decimals;
+      setCount(Math.floor(easeOutQuart * end * multiplier) / multiplier);
 
       if (progress < 1) {
         requestAnimationFrame(animate);
@@ -55,7 +58,7 @@ const AnimatedCounter = ({
     };
 
     requestAnimationFrame(animate);
-  }, [isVisible, end, duration]);
+  }, [isVisible, end, duration, decimals]);
 
   return (
     <motion.div
@@ -67,7 +70,10 @@ const AnimatedCounter = ({
     >
       <span className="tabular-nums">
         {prefix}
-        {count.toLocaleString()}
+        {count.toLocaleString(undefined, {
+          minimumFractionDigits: decimals,
+          maximumFractionDigits: decimals,
+        })}
         {suffix}
       </span>
     </motion.div>

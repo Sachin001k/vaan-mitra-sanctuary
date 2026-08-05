@@ -5,46 +5,61 @@ import Footer from "@/components/Footer";
 
 const teamMembers = [
   {
-    name: "Arjun Mehta",
-    role: "Founder & Director",
-    bio: "Wildlife biologist with 8+ years in tiger conservation across Central India. Led field operations in Pench and Kanha.",
-    focus: "Tiger Conservation",
-    emoji: "🐯",
+    name: "Atharva Agrawal",
+    role: "Founder & President",
+    initials: "AA",
   },
   {
-    name: "Priya Sharma",
-    role: "Head of Technology",
-    bio: "AI/ML engineer building RAPTOR — our drone and camera trap monitoring system for real-time poaching alerts.",
-    focus: "Conservation Tech",
-    emoji: "🛰️",
+    name: "Vanssh Badhgare",
+    role: "Vice President",
+    initials: "VB",
   },
   {
-    name: "Dr. Kavitha Nair",
-    role: "Chief Scientist",
-    bio: "PhD in Ecology from IISc Bangalore. Specializes in elephant corridor mapping and human-wildlife conflict mitigation.",
-    focus: "Elephant Corridors",
-    emoji: "🐘",
+    name: "Amreen Kaur Bhatia",
+    role: "Director of Marketing",
+    initials: "AB",
   },
   {
-    name: "Rohit Verma",
-    role: "Field Operations Lead",
-    bio: "Former forest ranger turned conservationist. Coordinates ground teams across 12 national parks in India.",
-    focus: "Field Operations",
-    emoji: "🌿",
+    name: "Vihaan Gupta",
+    role: "Director of Operations & Outreach",
+    initials: "VG",
   },
   {
-    name: "Ananya Desai",
-    role: "Community Outreach",
-    bio: "Works with indigenous communities to build sustainable coexistence models between humans and wildlife.",
-    focus: "Community Work",
-    emoji: "🤝",
+    name: "Rida Sethi",
+    role: "Creative Director",
+    initials: "RS",
   },
   {
-    name: "Vikram Singh",
-    role: "Wildlife Photographer",
-    bio: "Award-winning photographer documenting India's endangered species. Published in National Geographic India.",
-    focus: "Visual Documentation",
-    emoji: "📷",
+    name: "Shreya Banerjee",
+    role: "Arts & Impact Head",
+    initials: "SB",
+  },
+];
+
+const advisoryBoard = [
+  {
+    name: "Animesh Manna",
+    role: "Wildlife Conservationist & Naturalist",
+    description:
+      "Experienced conservationist and field naturalist dedicated to biodiversity conservation, wildlife monitoring, and environmental education. Works across MP.",
+  },
+  {
+    name: "Imran Khan",
+    role: "Wildlife Naturalist & Conservation Expert",
+    description:
+      "Wildlife expert with extensive field experience in ecology, wildlife behaviour, and conservation awareness.",
+  },
+  {
+    name: "Radhe Nagpure",
+    role: "Wildlife Photographer, Conservationist & Wildlife Tour Specialist",
+    description:
+      "Wildlife photographer and conservation advocate, specializing in ethical wildlife tourism, nature interpretation, and conservation storytelling through photography.",
+  },
+  {
+    name: "Dr. Vijay Ramesh",
+    role: "Scientist & Researcher, Cornell Lab of Ornithology",
+    description:
+      "An ecoacoustics researcher whose work focuses on biodiversity monitoring, acoustic ecology, and the application of emerging technologies to wildlife conservation. He provides scientific guidance and research mentorship to RAPTOR.",
   },
 ];
 
@@ -162,8 +177,8 @@ const TeamPage = () => {
             viewport={{ once: true }}
             className="mb-12"
           >
-            <h2 className="font-display text-4xl text-ivory mb-2">Team Members</h2>
-            <p className="text-muted-foreground">The people behind Vaan Mitra Foundation</p>
+            <h2 className="font-display text-4xl text-ivory mb-2">The Mitras</h2>
+            <p className="text-muted-foreground">The core team behind Vann Mitra Foundation</p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -177,25 +192,54 @@ const TeamPage = () => {
                 whileHover={{ y: -4 }}
                 className="bg-jungle-dark border border-jungle-medium/30 p-6 group hover:border-jungle-amazon transition-all duration-300"
               >
-                {/* Avatar & Emoji */}
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="w-16 h-16 bg-jungle-deep border border-jungle-medium/50 flex items-center justify-center text-3xl flex-shrink-0 group-hover:border-jungle-canopy transition-colors">
-                    {member.emoji}
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-jungle-deep border border-jungle-medium/50 flex items-center justify-center text-xl font-display text-jungle-canopy flex-shrink-0 group-hover:border-jungle-canopy transition-colors">
+                    {member.initials}
                   </div>
                   <div>
                     <h3 className="font-display text-xl text-ivory">{member.name}</h3>
                     <p className="text-jungle-canopy text-sm font-medium">{member.role}</p>
                   </div>
                 </div>
-
-                <p className="text-muted-foreground text-sm leading-relaxed mb-4">{member.bio}</p>
-
-                <div className="pt-4 border-t border-jungle-medium/20">
-                  <span className="inline-block px-3 py-1 bg-jungle-deep text-xs text-jungle-canopy uppercase tracking-wider">
-                    {member.focus}
-                  </span>
-                </div>
               </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Advisory Board */}
+      <section className="py-20 px-6 bg-jungle-deep border-t border-jungle-medium/20">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="mb-12"
+          >
+            <h2 className="font-display text-4xl text-ivory mb-3">Advisory Board</h2>
+            <p className="text-muted-foreground max-w-3xl">
+              Guiding Vann Mitra Foundation with expertise in conservation, research,
+              technology, policy, and education.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {advisoryBoard.map((advisor, index) => (
+              <motion.article
+                key={advisor.name}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-jungle-dark border border-jungle-medium/30 p-6 hover:border-jungle-amazon transition-colors"
+              >
+                <h3 className="font-display text-2xl text-ivory mb-1">{advisor.name}</h3>
+                <p className="text-jungle-canopy text-sm font-medium mb-4">{advisor.role}</p>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  {advisor.description}
+                </p>
+              </motion.article>
             ))}
           </div>
         </div>

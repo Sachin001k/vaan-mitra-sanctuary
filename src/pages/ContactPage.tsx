@@ -120,9 +120,8 @@ const ContactPage = () => {
                   <div>
                     <h4 className="text-ivory font-semibold mb-1">Office Address</h4>
                     <p className="text-muted-foreground text-sm">
-                      Vaan Mitra Foundation<br />
-                      Wildlife Conservation Center<br />
-                      New Delhi, India - 110001
+                      Vann Mitra NGO<br />
+                      Nagpur, Maharashtra 440010
                     </p>
                   </div>
                 </div>
@@ -133,10 +132,12 @@ const ContactPage = () => {
                   </div>
                   <div>
                     <h4 className="text-ivory font-semibold mb-1">Email</h4>
-                    <p className="text-muted-foreground text-sm">
-                      info@vaanmitra.org<br />
-                      volunteer@vaanmitra.org
-                    </p>
+                    <a
+                      href="mailto:vannmitrafoundation.org@gmail.com"
+                      className="text-muted-foreground text-sm hover:text-jungle-canopy transition-colors"
+                    >
+                      vannmitrafoundation.org@gmail.com
+                    </a>
                   </div>
                 </div>
 
@@ -146,10 +147,12 @@ const ContactPage = () => {
                   </div>
                   <div>
                     <h4 className="text-ivory font-semibold mb-1">Phone</h4>
-                    <p className="text-muted-foreground text-sm">
-                      +91 XXXXX XXXXX<br />
-                      (Mon-Sat, 9AM-6PM IST)
-                    </p>
+                    <a
+                      href="tel:+917350511500"
+                      className="text-muted-foreground text-sm hover:text-jungle-canopy transition-colors"
+                    >
+                      +91 73505 11500
+                    </a>
                   </div>
                 </div>
 
@@ -200,22 +203,6 @@ const ContactPage = () => {
               </div>
             </motion.div>
           </div>
-        </div>
-      </section>
-
-      {/* Emergency Contact */}
-      <section className="py-12 px-6 bg-jungle-deep border-t border-jungle-medium/30">
-        <div className="max-w-3xl mx-auto text-center">
-          <h3 className="font-display text-xl text-ivory mb-4">
-            Wildlife Emergency?
-          </h3>
-          <p className="text-muted-foreground text-sm mb-4">
-            If you spot an injured or distressed animal, please contact the 
-            nearest forest department or wildlife rescue helpline immediately.
-          </p>
-          <p className="text-jungle-canopy font-bold text-lg">
-            Wildlife Helpline: 1800-XXX-XXXX
-          </p>
         </div>
       </section>
 
