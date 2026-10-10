@@ -139,7 +139,7 @@ const MapsPage = () => {
     "Indian Wolf": "Indian_wolf",
   };
 
-  const wikiSummariesBySlug = wikiCards.reduce<Record<string, any>>((acc, card) => {
+  const wikiSummariesBySlug = wikiCards.reduce<Record<string, NonNullable<(typeof wikiCards)[number]["data"]>>>((acc, card) => {
     if (card.slug && card.data) {
       acc[card.slug] = card.data;
     }

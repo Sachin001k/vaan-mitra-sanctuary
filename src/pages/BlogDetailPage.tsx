@@ -7,11 +7,12 @@ import { ArrowLeft } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import supabase from "@/lib/supabaseClient";
+import { sanitizeHtml } from "@/lib/sanitizeHtml";
 
 const fetchBlogBySlug = async (slug: string) => {
   const { data, error } = await supabase
     .from("blogs")
-    .select("id,title,description,topic,tags,minute_read,published_at,image_url,metadata")
+    .select("id,title,description,topic,tags,minute_read,published_at,image_url,slug,metadata")
     .eq("slug", slug)
     .single();
 
@@ -102,7 +103,7 @@ const BlogDetailPage = () => {
                 <div className="space-y-4">
                   <div
                     className="text-lg leading-relaxed text-muted-foreground"
-                    dangerouslySetInnerHTML={{ __html: blog.description ?? "" }}
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(blog.description) }}
                   />
                   <div className="flex flex-wrap gap-2">
                     {tagList.map((tag) => (

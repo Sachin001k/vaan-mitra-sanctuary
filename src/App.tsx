@@ -3,18 +3,21 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { lazy, Suspense } from "react";
 import Index from "./pages/Index";
-import RaptorPage from "./pages/RaptorPage";
-import MapsPage from "./pages/MapsPage";
-import ImpactPage from "./pages/ImpactPage";
-import PhotographyPage from "./pages/PhotographyPage";
-import BlogPage from "./pages/BlogPage";
-import DonatePage from "./pages/DonatePage";
-import ContactPage from "./pages/ContactPage";
-import TeamPage from "./pages/TeamPage";
-import AdminPage from "./pages/AdminPage";
-import BlogDetailPage from "./pages/BlogDetailPage";
 import NotFound from "./pages/NotFound";
+
+// Other pages load on demand so the first visit only downloads the home page.
+const RaptorPage = lazy(() => import("./pages/RaptorPage"));
+const MapsPage = lazy(() => import("./pages/MapsPage"));
+const ImpactPage = lazy(() => import("./pages/ImpactPage"));
+const PhotographyPage = lazy(() => import("./pages/PhotographyPage"));
+const BlogPage = lazy(() => import("./pages/BlogPage"));
+const DonatePage = lazy(() => import("./pages/DonatePage"));
+const ContactPage = lazy(() => import("./pages/ContactPage"));
+const TeamPage = lazy(() => import("./pages/TeamPage"));
+const AdminPage = lazy(() => import("./pages/AdminPage"));
+const BlogDetailPage = lazy(() => import("./pages/BlogDetailPage"));
 
 const queryClient = new QueryClient();
 
@@ -24,21 +27,23 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/raptor" element={<RaptorPage />} />
-          <Route path="/maps" element={<MapsPage />} />
-          <Route path="/impact" element={<ImpactPage />} />
-          <Route path="/photography" element={<PhotographyPage />} />
-          <Route path="/blog" element={<BlogPage />} />
-          <Route path="/donate" element={<DonatePage />} />
-          <Route path="/team" element={<TeamPage />} />
-          <Route path="/admin" element={<AdminPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/blog/:slug" element={<BlogDetailPage />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Suspense fallback={<div className="min-h-screen bg-background" />}>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/raptor" element={<RaptorPage />} />
+            <Route path="/maps" element={<MapsPage />} />
+            <Route path="/impact" element={<ImpactPage />} />
+            <Route path="/photography" element={<PhotographyPage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/donate" element={<DonatePage />} />
+            <Route path="/team" element={<TeamPage />} />
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/blog/:slug" element={<BlogDetailPage />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

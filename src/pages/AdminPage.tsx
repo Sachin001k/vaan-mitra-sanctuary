@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import type { Session } from "@supabase/supabase-js";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -26,7 +27,7 @@ import {
 } from "@/components/ui/select";
 import { useDropzone } from "react-dropzone";
 import { useToast } from "@/components/ui/use-toast";
-import supabase from "@/lib/supabaseClient";
+import supabase, { isSupabaseConfigured } from "@/lib/supabaseClient";
 import { cn } from "@/lib/utils";
 import {
   Dialog,
@@ -107,6 +108,103 @@ const blogSchema = z
 type BlogFormValues = z.infer<typeof blogSchema>;
 
 const AdminPage = () => {
+  const [session, setSession] = useState<Session | null>(null);
+  const [checkingSession, setCheckingSession] = useState(isSupabaseConfigured);
+
+  useEffect(() => {
+    if (!isSupabaseConfigured) {
+      return;
+    }
+    supabase.auth.getSession().then(({ data }) => {
+      setSession(data.session);
+      setCheckingSession(false);
+    });
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      setSession(nextSession);
+    });
+    return () => listener.subscription.unsubscribe();
+  }, []);
+
+  let content: JSX.Element;
+  if (!isSupabaseConfigured) {
+    content = (
+      <AdminNotice
+        title="Supabase is not configured"
+        message="Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in .env.local, then restart the dev server."
+      />
+    );
+  } else if (checkingSession) {
+    content = <AdminNotice title="Admin studio" message="Checking your session…" />;
+  } else if (!session) {
+    content = <AdminLogin />;
+  } else {
+    return <AdminStudio userEmail={session.user.email ?? ""} />;
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-black via-jungle-deep/60 to-black text-ivory">
+      <Navigation />
+      <main className="mx-auto flex max-w-md flex-col px-6 pb-20 pt-32">{content}</main>
+      <Footer />
+    </div>
+  );
+};
+
+const AdminNotice = ({ title, message }: { title: string; message: string }) => (
+  <section className="rounded-3xl border border-ivory/10 bg-background/70 p-8 text-center">
+    <h1 className="text-2xl font-semibold">{title}</h1>
+    <p className="mt-2 text-sm text-muted-foreground">{message}</p>
+  </section>
+);
+
+const AdminLogin = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setSubmitting(true);
+    setError("");
+    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+    if (signInError) {
+      setError(signInError.message);
+    }
+    setSubmitting(false);
+  };
+
+  return (
+    <section className="rounded-3xl border border-ivory/10 bg-background/70 p-8 shadow-[0_25px_80px_rgba(0,0,0,0.35)]">
+      <p className="text-xs uppercase tracking-[0.5em] text-jungle-canopy">Admin studio</p>
+      <h1 className="mb-6 text-2xl font-semibold">Sign in</h1>
+      <form onSubmit={handleLogin} className="space-y-4">
+        <Input
+          type="email"
+          placeholder="Email"
+          autoComplete="username"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          required
+        />
+        <Input
+          type="password"
+          placeholder="Password"
+          autoComplete="current-password"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+          required
+        />
+        {error && <p className="text-sm text-destructive">{error}</p>}
+        <Button type="submit" className="w-full" disabled={submitting}>
+          {submitting ? "Signing in…" : "Sign in"}
+        </Button>
+      </form>
+    </section>
+  );
+};
+
+const AdminStudio = ({ userEmail }: { userEmail: string }) => {
   const defaultValues = useMemo(
     () => ({
       title: "",
@@ -195,22 +293,25 @@ const AdminPage = () => {
 
   const fetchBlogs = useCallback(async () => {
     setLoadingBlogs(true);
-    const { data, error } = await supabase
-      .from("blogs")
-      .select("*")
-      .order("published_at", { ascending: false });
+    try {
+      const { data, error } = await supabase
+        .from("blogs")
+        .select("*")
+        .order("published_at", { ascending: false });
 
-    if (error) {
+      if (error) {
+        throw error;
+      }
+      setBlogs(data ?? []);
+    } catch (error) {
       toast({
         title: "Unable to load stories",
-        description: error.message,
+        description: (error as Error)?.message || "An unexpected error occurred.",
         variant: "destructive",
       });
-    } else {
-      setBlogs(data ?? []);
+    } finally {
+      setLoadingBlogs(false);
     }
-
-    setLoadingBlogs(false);
   }, [toast]);
 
   useEffect(() => {
@@ -249,14 +350,22 @@ const AdminPage = () => {
       return;
     }
 
-    const { error } = await supabase.from("blogs").delete().eq("id", blog.id);
-    if (error) {
+    // Supabase returns no error when row-level security blocks a delete, so check the deleted rows instead.
+    const { data, error } = await supabase.from("blogs").delete().eq("id", blog.id).select("id");
+    if (error || !data?.length) {
       toast({
         title: "Delete failed",
-        description: error.message,
+        description: error?.message ?? "The database did not allow this story to be deleted.",
         variant: "destructive",
       });
       return;
+    }
+
+    if (blog.image_path) {
+      const { error: removeError } = await supabase.storage.from("blog-images").remove([blog.image_path]);
+      if (removeError) {
+        console.warn("Story deleted but its cover image could not be removed:", removeError.message);
+      }
     }
 
     toast({ title: "Story removed", description: `“${blog.title}” was deleted.` });
@@ -314,13 +423,9 @@ const AdminPage = () => {
       throw uploadError ?? new Error("Failed to upload the hero image.");
     }
 
-    const { data: publicUrlData, error: publicUrlError } = await supabase.storage
+    const { data: publicUrlData } = supabase.storage
       .from("blog-images")
       .getPublicUrl(uploadData.path);
-
-    if (publicUrlError) {
-      throw publicUrlError;
-    }
 
     return {
       imageUrl: publicUrlData.publicUrl,
@@ -748,7 +853,11 @@ const AdminPage = () => {
                 Upload new stories, refresh entries, and keep the site up to date from here.
               </p>
             </div>
-            <div>
+            <div className="flex items-center gap-3">
+              <span className="text-xs text-muted-foreground">{userEmail}</span>
+              <Button size="sm" variant="outline" onClick={() => supabase.auth.signOut()}>
+                Sign out
+              </Button>
               <Button size="sm" onClick={openModalForNewBlog}>
                 Add a blog
               </Button>

@@ -1,7 +1,24 @@
+import type { FormEvent } from "react";
 import { motion } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { MapPin, Phone, Mail, Clock, Instagram, Facebook, Twitter, Youtube } from "lucide-react";
+
+const CONTACT_EMAIL = "vannmitrafoundation.org@gmail.com";
+
+// No backend yet: open the visitor's email app with the message pre-filled.
+const handleContactSubmit = (event: FormEvent<HTMLFormElement>) => {
+  event.preventDefault();
+  const form = new FormData(event.currentTarget);
+  const name = String(form.get("name") ?? "");
+  const email = String(form.get("email") ?? "");
+  const subject = String(form.get("subject") ?? "") || "general";
+  const message = String(form.get("message") ?? "");
+  const body = `${message}\n\n— ${name} (${email})`;
+  window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
+    `Website enquiry: ${subject}`,
+  )}&body=${encodeURIComponent(body)}`;
+};
 
 const ContactPage = () => {
   return (
@@ -45,7 +62,7 @@ const ContactPage = () => {
                 Send Us a Message
               </h2>
               
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={handleContactSubmit}>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm text-muted-foreground uppercase tracking-wider mb-2">
@@ -53,6 +70,8 @@ const ContactPage = () => {
                     </label>
                     <input
                       type="text"
+                      name="name"
+                      required
                       placeholder="Enter your name"
                       className="input-jungle"
                     />
@@ -63,6 +82,8 @@ const ContactPage = () => {
                     </label>
                     <input
                       type="email"
+                      name="email"
+                      required
                       placeholder="Enter your email"
                       className="input-jungle"
                     />
@@ -73,7 +94,7 @@ const ContactPage = () => {
                   <label className="block text-sm text-muted-foreground uppercase tracking-wider mb-2">
                     Subject
                   </label>
-                  <select className="input-jungle">
+                  <select name="subject" className="input-jungle">
                     <option value="">Select a topic</option>
                     <option value="volunteer">Volunteer Inquiry</option>
                     <option value="partnership">Partnership Opportunity</option>
@@ -89,6 +110,8 @@ const ContactPage = () => {
                   </label>
                   <textarea
                     rows={6}
+                    name="message"
+                    required
                     placeholder="Tell us how we can help..."
                     className="input-jungle resize-none"
                   />

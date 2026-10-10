@@ -6,6 +6,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Calendar, Clock, Tag } from "lucide-react";
 import supabase from "@/lib/supabaseClient";
+import { sanitizeHtml } from "@/lib/sanitizeHtml";
 
 type BlogRecord = {
   id: string;
@@ -22,7 +23,7 @@ type BlogRecord = {
 
 const fetchBlogs = async () => {
   const { data, error } = await supabase
-    .from<BlogRecord>("blogs")
+    .from("blogs")
     .select("id,title,description,topic,tags,minute_read,published_at,image_url,slug,metadata")
     .order("published_at", { ascending: false });
 
@@ -30,7 +31,7 @@ const fetchBlogs = async () => {
     throw new Error(error.message);
   }
 
-  return data ?? [];
+  return (data ?? []) as BlogRecord[];
 };
 
 const formatDate = (value: string | null | undefined) => {
@@ -163,7 +164,7 @@ const BlogPage = () => {
 
                   <div
                     className="text-muted-foreground text-sm line-clamp-2"
-                    dangerouslySetInnerHTML={{ __html: post.description ?? "" }}
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.description) }}
                   />
 
                   <div className="flex flex-wrap gap-2">
