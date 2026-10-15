@@ -14,6 +14,7 @@ const fetchBlogBySlug = async (slug: string) => {
     .from("blogs")
     .select("id,title,description,topic,tags,minute_read,published_at,image_url,slug,metadata")
     .eq("slug", slug)
+    .eq("status", "published")
     .single();
 
   if (error) {

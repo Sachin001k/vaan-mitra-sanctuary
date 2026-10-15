@@ -25,6 +25,7 @@ const fetchBlogs = async () => {
   const { data, error } = await supabase
     .from("blogs")
     .select("id,title,description,topic,tags,minute_read,published_at,image_url,slug,metadata")
+    .eq("status", "published")
     .order("published_at", { ascending: false });
 
   if (error) {

@@ -4,7 +4,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Shield, Zap, Wifi, Volume2, CloudRain, Battery, Cpu, Radio } from "lucide-react";
 import raptorDevice1 from "@/assets/raptor-device-1.png";
-import raptorDevice2 from "@/assets/raptor-device-2.png";
+import raptorDevice2 from "@/assets/raptor-device-2.webp";
 import tigerImage from "@/assets/tiger.jpg";
 
 const features = [

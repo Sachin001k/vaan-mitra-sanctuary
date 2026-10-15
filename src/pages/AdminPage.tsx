@@ -46,6 +46,8 @@ const topicChoices = [
   "Other",
 ] as const;
 
+const publishStatuses = ["published", "draft"] as const;
+
 const quillModules = {
   toolbar: [
     [{ header: [1, 2, 3, false] }],
@@ -96,6 +98,7 @@ const blogSchema = z
     tags: z.string().optional(),
     minuteRead: z.coerce.number().int().min(1).max(120),
     publishedAt: z.string().optional(),
+    publishStatus: z.enum(publishStatuses),
   })
   .refine(
     (data) => data.topicChoice !== "Other" || Boolean(data.customTopic),
@@ -214,6 +217,7 @@ const AdminStudio = ({ userEmail }: { userEmail: string }) => {
       publishedAt: new Date().toISOString().slice(0, 16),
       topicChoice: topicChoices[0],
       customTopic: "",
+      publishStatus: "published" as const,
     }),
     [],
   );
@@ -331,6 +335,7 @@ const AdminStudio = ({ userEmail }: { userEmail: string }) => {
       publishedAt: new Date(blog.published_at).toISOString().slice(0, 16),
       topicChoice: derivedTopicChoice,
       customTopic: derivedTopicChoice === "Other" ? blog.topic : "",
+      publishStatus: blog.status === "published" ? "published" : "draft",
     });
 
     setEditingBlog(blog);
@@ -472,8 +477,8 @@ const AdminStudio = ({ userEmail }: { userEmail: string }) => {
         image_path: imagePath,
         metadata: editingBlog
           ? { ...editingBlog.metadata, updated_by: "admin-ui" }
-          : { created_by: "admin-ui", status: "draft" },
-        status: editingBlog?.status ?? "draft",
+          : { created_by: "admin-ui" },
+        status: values.publishStatus,
       };
 
       if (editingBlog) {
@@ -553,7 +558,14 @@ const AdminStudio = ({ userEmail }: { userEmail: string }) => {
                 blogs.map((blog) => (
                   <tr key={blog.id}>
                     <td className="px-4 py-4">
-                      <p className="font-semibold text-foreground">{blog.title}</p>
+                      <p className="font-semibold text-foreground">
+                        {blog.title}
+                        {blog.status !== "published" && (
+                          <span className="ml-2 rounded-full border border-ivory/30 px-2 py-0.5 text-[10px] uppercase tracking-wider text-muted-foreground">
+                            Draft
+                          </span>
+                        )}
+                      </p>
                       <p className="text-xs text-muted-foreground line-clamp-1">{blog.description}</p>
                     </td>
                     <td className="px-4 py-4">
@@ -657,6 +669,29 @@ const AdminStudio = ({ userEmail }: { userEmail: string }) => {
                       <FormDescription>
                         Select a curated topic (or choose Other to describe it yourself).
                       </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="publishStatus"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Visibility</FormLabel>
+                      <FormControl>
+                        <Select onValueChange={field.onChange} value={field.value}>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="published">Published</SelectItem>
+                            <SelectItem value="draft">Draft</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormDescription>Drafts are only visible here, not on the public blog.</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
