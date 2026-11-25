@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Link } from "react-router-dom";
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { MapPin, Mail } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import { CONTACT_EMAIL } from "@/data/siteLinks";
 
@@ -187,11 +187,8 @@ const ContactPage = () => {
                     <MapPin className="text-ivory" size={20} />
                   </div>
                   <div>
-                    <h3 className="text-ivory font-semibold mb-1 font-body text-base">Office Address</h3>
-                    <p className="text-muted-foreground text-sm">
-                      Vann Mitra NGO<br />
-                      Nagpur, Maharashtra 440010
-                    </p>
+                    <h3 className="text-ivory font-semibold mb-1 font-body text-base">Based in</h3>
+                    <p className="text-muted-foreground text-sm">Nagpur, Maharashtra, India</p>
                   </div>
                 </div>
 
@@ -210,33 +207,6 @@ const ContactPage = () => {
                   </div>
                 </div>
 
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 bg-jungle-amazon flex items-center justify-center flex-shrink-0">
-                    <Phone className="text-ivory" size={20} />
-                  </div>
-                  <div>
-                    <h3 className="text-ivory font-semibold mb-1 font-body text-base">Phone</h3>
-                    <a
-                      href="tel:+917350511500"
-                      className="text-muted-foreground text-sm hover:text-jungle-canopy transition-colors"
-                    >
-                      +91 73505 11500
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 bg-jungle-amazon flex items-center justify-center flex-shrink-0">
-                    <Clock className="text-ivory" size={20} />
-                  </div>
-                  <div>
-                    <h3 className="text-ivory font-semibold mb-1 font-body text-base">Working Hours</h3>
-                    <p className="text-muted-foreground text-sm">
-                      Monday - Saturday: 9:00 AM - 6:00 PM<br />
-                      Sunday: Closed
-                    </p>
-                  </div>
-                </div>
               </div>
 
               {/* What to contact us about */}

@@ -46,8 +46,8 @@ const BlogDetailPage = () => {
   const seoDescription = blog
     ? stripHtml(blog.description).slice(0, 160) || "Read conservation dispatches from Vann Mitra."
     : "Dispatches from Vann Mitra Foundation's wildlife patrols.";
-  const seoUrl = blog ? `https://vaanmitra.org/journal/${blog.slug}` : "https://vaanmitra.org/journal";
-  const seoImage = blog?.image_url ?? "https://vaanmitra.org/logo.png";
+  const seoUrl = blog ? `https://vannmitra.org/journal/${blog.slug}` : "https://vannmitra.org/journal";
+  const seoImage = blog?.image_url ?? "https://vannmitra.org/logo.png";
 
   return (
     <>

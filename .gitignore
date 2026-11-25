@@ -34,3 +34,6 @@ public/videos/
 public/pdf/
 images/
 public/images/
+
+# Unused media and old components kept locally, not deployed or committed
+_archive/

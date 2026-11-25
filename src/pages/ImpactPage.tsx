@@ -1,11 +1,13 @@
 import { motion } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import AnimatedCounter from "@/components/AnimatedCounter";
 import { Shield, TreePine, Heart, Users, Globe, GraduationCap, Ear, Film, FlaskConical } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import SectionHeader from "@/components/SectionHeader";
-import elephantImage from "@/assets/elephant.jpg";
+import { FAULT_LINE_VIDEO_ID, IEEE_PAPER_URL, PRESS_LINKS } from "@/data/siteLinks";
+import PhotoGallery from "@/components/PhotoGallery";
+import LocalVideo from "@/components/LocalVideo";
+import { ARTWORK_PHOTOS, FIELD_WALK_VIDEO, OUTREACH_PHOTOS, SCREENING_PHOTOS } from "@/data/media";
 
 const programmes = [
   {
@@ -38,64 +40,40 @@ const measurement = [
 ];
 
 const ImpactPage = () => {
+  // Figures supplied by the team in the Website doc (Nov 2026). Shown statically, not as animated counters.
   const stats = [
-    {
-      icon: Shield,
-      value: 24,
-      label: "Animals Rescued",
-      description: "Direct rescue operations across India",
-    },
-    {
-      icon: TreePine,
-      value: 2000,
-      suffix: "+",
-      label: "Hectares Protected",
-      description: "Critical habitat under conservation",
-    },
-    {
-      icon: Users,
-      value: 100000,
-      suffix: "+",
-      label: "People Reached",
-      description: "Through awareness and outreach",
-    },
-    {
-      icon: Heart,
-      value: 3.7,
-      prefix: "$",
-      suffix: "k",
-      decimals: 1,
-      label: "Funds Raised",
-      description: "For conservation initiatives",
-    },
-    {
-      icon: Globe,
-      value: 6,
-      label: "States Covered",
-      description: "Active conservation zones",
-    },
+    { icon: Shield, value: "25", label: "Animals rescued" },
+    { icon: TreePine, value: "100+", label: "Hectares protected" },
+    { icon: Users, value: "1 lakh", label: "People reached" },
+    { icon: Heart, value: "$17k", label: "Funds raised" },
+    { icon: Globe, value: "8", label: "States covered" },
   ];
 
+  // Only milestones with a public source.
   const milestones = [
     {
-      year: "2024",
-      title: "Foundation Established",
-      description: "Vann Mitra started as a conservation project with a vision to protect India's wildlife.",
+      date: "Nov 2025",
+      title: "RAPTOR featured in The Hitavada",
+      description: "Coverage of the RAPTOR acoustic monitoring prototype and its aim of detecting threats to elephants.",
+      href: PRESS_LINKS[0].href,
     },
     {
-      year: "2025",
-      title: "NGO Registration",
-      description: "Officially registered as an NGO, enabling larger-scale conservation efforts.",
+      date: null,
+      title: "Featured by EdexLive",
+      description: "“Listening to the forest” — a profile of the mission to protect people and wildlife.",
+      href: PRESS_LINKS[1].href,
     },
     {
-      year: "2025",
-      title: "First Major Rescue",
-      description: "Successfully coordinated rescue of 23 animals from flooding in Assam.",
+      date: null,
+      title: "RAPTOR research published on IEEE Xplore",
+      description: "The research behind RAPTOR's detection approach.",
+      href: IEEE_PAPER_URL,
     },
     {
-      year: "2026",
-      title: "Tech Initiative Launch",
-      description: "Launched AI-powered monitoring system for early poaching detection.",
+      date: null,
+      title: "Fault Line documentary released",
+      description: "A human–tiger conflict documentary exploring the lives of people living near tiger landscapes.",
+      href: `https://www.youtube.com/watch?v=${FAULT_LINE_VIDEO_ID}`,
     },
   ];
 
@@ -112,9 +90,9 @@ const ImpactPage = () => {
       <section className="pt-32 pb-20 px-6 relative overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src={elephantImage}
+            src={OUTREACH_PHOTOS[1].src}
             alt=""
-            className="w-full h-full object-cover opacity-20"
+            className="w-full h-full object-cover opacity-25"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-jungle-darkest via-jungle-dark/90 to-jungle-darkest" />
         </div>
@@ -162,6 +140,39 @@ const ImpactPage = () => {
         </div>
       </section>
 
+      {/* In the field */}
+      <section className="py-20 px-6 bg-jungle-dark border-t border-jungle-medium/20">
+        <div className="max-w-7xl mx-auto space-y-16">
+          <div>
+            <SectionHeader eyebrow="Field listening" title="Conversations where people live with wildlife">
+              <p>
+                Team members meet residents in villages near wildlife habitat, listen to their
+                experiences and share practical conflict-prevention guidance.
+              </p>
+            </SectionHeader>
+            <div className="grid lg:grid-cols-[3fr_1fr] gap-6 items-start">
+              <PhotoGallery photos={OUTREACH_PHOTOS} columns="grid-cols-1 sm:grid-cols-3" aspect="aspect-[3/4]" />
+              <LocalVideo video={FIELD_WALK_VIDEO} className="max-w-xs w-full mx-auto" />
+            </div>
+          </div>
+
+          <div>
+            <SectionHeader eyebrow="Education & storytelling" title="Screenings and sessions in schools">
+              <p>
+                Film screenings and sessions on wildlife behaviour and coexistence. Students are shown
+                from behind to protect their privacy.
+              </p>
+            </SectionHeader>
+            <PhotoGallery photos={SCREENING_PHOTOS} aspect="aspect-video" />
+          </div>
+
+          <div>
+            <SectionHeader eyebrow="Awareness through art" title="Artwork from our awareness work" />
+            <PhotoGallery photos={ARTWORK_PHOTOS} aspect="aspect-[4/5]" />
+          </div>
+        </div>
+      </section>
+
       {/* Measurement framework */}
       <section className="py-20 px-6 bg-jungle-deep border-y border-jungle-medium/20">
         <div className="max-w-7xl mx-auto">
@@ -180,32 +191,22 @@ const ImpactPage = () => {
         </div>
       </section>
 
-      {/* Stats Grid */}
+      {/* Figures */}
       <section className="py-20 px-6 bg-jungle-dark">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="stat-card group hover:border-jungle-amazon transition-all duration-300"
-              >
-                <stat.icon className="w-10 h-10 text-jungle-canopy mb-6" />
-                <AnimatedCounter
-                  end={stat.value}
-                  prefix={stat.prefix}
-                  suffix={stat.suffix}
-                  decimals={stat.decimals}
-                  className="font-display text-5xl text-ivory mb-2"
-                />
-                <h3 className="text-lg text-ivory font-semibold mb-2">{stat.label}</h3>
-                <p className="text-sm text-muted-foreground">{stat.description}</p>
-              </motion.div>
+          <SectionHeader eyebrow="In numbers" title="Activity so far" />
+          <dl className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {stats.map((stat) => (
+              <div key={stat.label} className="stat-card">
+                <stat.icon className="w-8 h-8 text-jungle-canopy mb-4" aria-hidden="true" />
+                <dd className="font-display text-4xl md:text-5xl text-ivory mb-2">{stat.value}</dd>
+                <dt className="text-sm text-muted-foreground uppercase tracking-wider">{stat.label}</dt>
+              </div>
             ))}
-          </div>
+          </dl>
+          <p className="mt-6 text-sm text-muted-foreground">
+            Figures reported by the Vann Mitra team. Last updated November 2026.
+          </p>
         </div>
       </section>
 
@@ -220,10 +221,10 @@ const ImpactPage = () => {
             className="text-center mb-16"
           >
             <h2 className="font-display text-4xl md:text-5xl text-ivory mb-4">
-              Our Journey
+              Milestones
             </h2>
             <p className="text-muted-foreground">
-              Key milestones in our conservation mission
+              Public milestones, each linked to its source.
             </p>
           </motion.div>
 
@@ -234,7 +235,7 @@ const ImpactPage = () => {
             <div className="space-y-12">
               {milestones.map((milestone, index) => (
                 <motion.div
-                  key={index}
+                  key={milestone.title}
                   initial={{ opacity: 0, x: -30 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -242,8 +243,8 @@ const ImpactPage = () => {
                   className="relative pl-20"
                 >
                   {/* Year badge */}
-                  <div className="absolute left-0 w-16 h-16 bg-jungle-amazon flex items-center justify-center">
-                    <span className="text-ivory font-bold text-sm">{milestone.year}</span>
+                  <div className="absolute left-0 w-16 h-16 bg-jungle-amazon flex items-center justify-center text-center">
+                    <span className="text-ivory font-bold text-xs leading-tight">{milestone.date ?? "•"}</span>
                   </div>
                   
                   {/* Content */}
@@ -251,9 +252,17 @@ const ImpactPage = () => {
                     <h3 className="font-display text-xl text-ivory mb-2">
                       {milestone.title}
                     </h3>
-                    <p className="text-muted-foreground text-sm">
+                    <p className="text-muted-foreground text-sm mb-3">
                       {milestone.description}
                     </p>
+                    <a
+                      href={milestone.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-sm text-jungle-canopy underline underline-offset-4"
+                    >
+                      View source
+                    </a>
                   </div>
                 </motion.div>
               ))}

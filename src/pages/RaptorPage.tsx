@@ -7,9 +7,9 @@ import PageMeta from "@/components/PageMeta";
 import SectionHeader from "@/components/SectionHeader";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
 import { IEEE_PAPER_URL, RAPTOR_VIDEO_ID } from "@/data/siteLinks";
-import raptorDevice1 from "@/assets/raptor-device-1.png";
-import raptorDevice2 from "@/assets/raptor-device-2.webp";
-import tigerImage from "@/assets/tiger.jpg";
+import PhotoGallery from "@/components/PhotoGallery";
+import LocalVideo from "@/components/LocalVideo";
+import { RAPTOR_BENCH, RAPTOR_GALLERY, RAPTOR_HERO, RAPTOR_VIDEO } from "@/data/media";
 
 // Research architecture, as described in project materials.
 const architecture = [
@@ -41,13 +41,22 @@ const safetyPoints = [
   "Data retention, community consent, privacy and model error-handling are documented as part of the research.",
 ];
 
+// Components described in the project materials (prototype, not a production spec sheet).
 const specs = [
-  { label: "Detection Range", value: "500m+" },
-  { label: "Battery Life", value: "6 months" },
-  { label: "Response Time", value: "<5 sec" },
-  { label: "Accuracy", value: "98.5%" },
-  { label: "Weight", value: "1.2 kg" },
-  { label: "Connectivity", value: "LoRa/GSM" },
+  { label: "Edge processor", value: "Raspberry Pi-class" },
+  { label: "Audio", value: "Microphones" },
+  { label: "Vision", value: "Camera" },
+  { label: "Location", value: "Positioning module" },
+  { label: "Power", value: "Weatherproof enclosure" },
+  { label: "Models", value: "Spectrogram + object detection" },
+];
+
+// Figures supplied by the RAPTOR team (Website doc, Nov 2026).
+const impactStats = [
+  { value: "28–30", label: "Deployments" },
+  { value: "3,000 km²", label: "Area monitored" },
+  { value: "470", label: "Threats detected" },
+  { value: "12", label: "Elephant lives saved" },
 ];
 
 const RaptorPage = () => {
@@ -123,34 +132,19 @@ const RaptorPage = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="relative"
             >
-              <div className="relative aspect-square">
+              <figure className="relative">
                 <img
-                  src={raptorDevice1}
-                  alt="RAPTOR prototype acoustic monitoring device"
-                  className="w-full h-full object-contain"
+                  src={RAPTOR_HERO.src}
+                  alt={RAPTOR_HERO.alt}
+                  width={RAPTOR_HERO.width}
+                  height={RAPTOR_HERO.height}
+                  className="w-full aspect-[4/3] object-cover"
                 />
-                {/* Glow effect */}
-                <div className="absolute inset-0 bg-gradient-radial from-jungle-canopy/20 to-transparent pointer-events-none" />
-              </div>
-
-              {/* Floating specs */}
-              <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-4 right-4 px-4 py-2 bg-jungle-deep/90 border border-jungle-amazon/50 backdrop-blur-sm"
-              >
-                <p className="text-xs text-muted-foreground">Detection Range</p>
-                <p className="text-jungle-canopy font-bold">500m+</p>
-              </motion.div>
-
-              <motion.div
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute bottom-4 left-4 px-4 py-2 bg-jungle-deep/90 border border-jungle-amazon/50 backdrop-blur-sm"
-              >
-                <p className="text-xs text-muted-foreground">Response Time</p>
-                <p className="text-jungle-canopy font-bold">&lt;5 seconds</p>
-              </motion.div>
+                <figcaption className="sr-only">{RAPTOR_HERO.caption}</figcaption>
+              </figure>
+              <p className="absolute bottom-4 left-4 px-4 py-2 bg-jungle-deep/90 border border-jungle-amazon/50 text-xs uppercase tracking-wider text-jungle-canopy">
+                Field test · prototype
+              </p>
             </motion.div>
           </div>
         </div>
@@ -208,11 +202,17 @@ const RaptorPage = () => {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <img
-                src={raptorDevice2}
-                alt="RAPTOR prototype"
-                className="w-full h-auto"
-              />
+              <figure>
+                <img
+                  src={RAPTOR_BENCH.src}
+                  alt={RAPTOR_BENCH.alt}
+                  width={RAPTOR_BENCH.width}
+                  height={RAPTOR_BENCH.height}
+                  loading="lazy"
+                  className="w-full h-auto"
+                />
+                <figcaption className="mt-3 text-sm text-muted-foreground">{RAPTOR_BENCH.caption}</figcaption>
+              </figure>
             </motion.div>
 
             <motion.div
@@ -227,7 +227,7 @@ const RaptorPage = () => {
               </h2>
 
               {/* Specs Grid */}
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 {specs.map((spec, index) => (
                   <motion.div
                     key={spec.label}
@@ -237,7 +237,7 @@ const RaptorPage = () => {
                     viewport={{ once: true }}
                     className="bg-jungle-dark p-4 border border-jungle-medium/30"
                   >
-                    <p className="text-2xl font-display text-jungle-canopy">
+                    <p className="text-lg font-display text-jungle-canopy leading-snug">
                       {spec.value}
                     </p>
                     <p className="text-xs text-muted-foreground uppercase tracking-wider">
@@ -295,6 +295,23 @@ const RaptorPage = () => {
         </div>
       </section>
 
+      {/* Bench to field */}
+      <section className="py-20 px-6 bg-jungle-deep">
+        <div className="max-w-7xl mx-auto">
+          <SectionHeader eyebrow="Build log" title="From the bench to the field">
+            <p>
+              Design, assembly and field testing of the RAPTOR prototype. Each caption says whether a
+              photo shows design work, a prototype or a field test. None shows an active operational
+              deployment, and device locations are not disclosed.
+            </p>
+          </SectionHeader>
+          <div className="grid lg:grid-cols-[2fr_1fr] gap-6 items-start">
+            <PhotoGallery photos={RAPTOR_GALLERY} columns="grid-cols-1 sm:grid-cols-2 xl:grid-cols-3" />
+            <LocalVideo video={RAPTOR_VIDEO} className="lg:sticky lg:top-28" />
+          </div>
+        </div>
+      </section>
+
       {/* Research & Media */}
       <section className="py-20 px-6 bg-jungle-dark">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
@@ -327,12 +344,7 @@ const RaptorPage = () => {
       <section className="py-16 px-6 bg-jungle-darkest border-y border-jungle-medium/30">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            {[
-              { value: "15+", label: "Deployments" },
-              { value: "500km²", label: "Area Protected" },
-              { value: "47", label: "Threats Detected" },
-              { value: "12", label: "Lives Saved" },
-            ].map((stat, index) => (
+            {impactStats.map((stat, index) => (
               <motion.div
                 key={stat.label}
                 initial={{ opacity: 0, y: 20 }}
@@ -349,6 +361,10 @@ const RaptorPage = () => {
               </motion.div>
             ))}
           </div>
+          <p className="mt-8 text-center text-sm text-muted-foreground">
+            Figures reported by the RAPTOR project team. Detections are possible events flagged for
+            human review; methodology and dated logs will be published alongside results.
+          </p>
         </div>
       </section>
 
@@ -356,7 +372,7 @@ const RaptorPage = () => {
       <section className="py-24 px-6 relative overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src={tigerImage}
+            src={RAPTOR_GALLERY[1].src}
             alt=""
             className="w-full h-full object-cover opacity-15"
           />

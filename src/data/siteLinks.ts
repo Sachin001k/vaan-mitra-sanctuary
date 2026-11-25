@@ -4,6 +4,8 @@ export const CONTACT_EMAIL = "vannmitrafoundation.org@gmail.com";
 
 export const FAULT_LINE_VIDEO_ID = "6fDL_dyWfio";
 export const RAPTOR_VIDEO_ID = "3YR_UmPuDpQ";
+// Home hero background video (tiger footage).
+export const HERO_VIDEO_ID = "ZSMsuqBciGo";
 
 export const IEEE_PAPER_URL = "https://ieeexplore.ieee.org/document/11580540";
 

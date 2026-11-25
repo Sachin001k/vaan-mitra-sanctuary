@@ -1,0 +1,26 @@
+[
+  {
+    "file": "kaziranga-national-park-gates.webp",
+    "driveTitle": "map-gates-kaziranga-national-park-2.webp",
+    "driveId": "1BTvhwjI7LZgrn_Occ3bV8XO4k2hSkFG8",
+    "width": 1024,
+    "height": 537,
+    "park": "Kaziranga National Park",
+    "state": "Assam",
+    "description": "Schematic map of the park between the River Brahmaputra and NH-37, showing range offices (Agaratoli, Baguri, Kohora, Gorakati), forest tracks, rest house, villages, rivers (Diphlu, Mora Diphlu, Mora Dhansiri), beels, Panbari Reserve Forest, lat/long ticks, north arrow and a 10 km scale bar.",
+    "visibleCredit": null,
+    "legible": true
+  },
+  {
+    "file": "jim-corbett-tiger-reserve.webp",
+    "driveTitle": "jimcorbettmap.jpg",
+    "driveId": "1GdAvP5FVTfOXAeKp0_e5PyYcAGwBBvv0",
+    "width": 1692,
+    "height": 1107,
+    "park": "Jim Corbett National Park (Corbett Tiger Reserve)",
+    "state": "Uttarakhand",
+    "description": "Illustrated 'Sketch Map of Corbett Tiger Reserve' showing Corbett National Park, Sonanadi WLS and buffer zone, Ramganga reservoir and rivers, entry gates (Vatanvasa, Rathuadhab, Durgadevi, Dhangarhi, Kalagarh, Kharagate, Amdanda), forest rest houses (Dhikala, Bijrani, Jhirna etc.), roads to nearby towns, Ramnagar and the reserve headquarters, with legend.",
+    "visibleCredit": null,
+    "legible": true
+  }
+]

@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 
-const SITE_URL = "https://vaanmitra.org";
+const SITE_URL = "https://vannmitra.org";
 const SITE_NAME = "Vann Mitra Foundation";
 
 type PageMetaProps = {

@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 Disallow: /admin
-Sitemap: https://vaanmitra.org/sitemap.xml
-Host: vaanmitra.org
+Sitemap: https://vannmitra.org/sitemap.xml
+Host: vannmitra.org

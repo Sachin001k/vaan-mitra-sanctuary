@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Users, Radio, Megaphone, ExternalLink } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import AmbientSound from "@/components/AmbientSound";
 import PageMeta from "@/components/PageMeta";
 import SectionHeader from "@/components/SectionHeader";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
-import { FAULT_LINE_VIDEO_ID, IEEE_PAPER_URL, PRESS_LINKS } from "@/data/siteLinks";
+import { FAULT_LINE_VIDEO_ID, HERO_VIDEO_ID, IEEE_PAPER_URL, PRESS_LINKS } from "@/data/siteLinks";
+import { HERO_IMAGE, OUTREACH_PHOTOS, RAPTOR_GALLERY, SCREENING_PHOTOS, WILDLIFE_PHOTOS, type Photo } from "@/data/media";
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -19,16 +19,19 @@ const fadeUp = {
 const pillars = [
   {
     icon: Users,
+    image: OUTREACH_PHOTOS[0],
     title: "People & coexistence",
     body: "Community conversations, local education, field observations and accessible information that help residents understand risks and response pathways.",
   },
   {
     icon: Radio,
+    image: RAPTOR_GALLERY[2],
     title: "Research & technology",
     body: "RAPTOR explores acoustic and visual monitoring to identify possible threats and support timely human review; it is a research system, not a replacement for trained responders.",
   },
   {
     icon: Megaphone,
+    image: SCREENING_PHOTOS[0],
     title: "Awareness & action",
     body: "Documentary storytelling, student outreach, photography and volunteering make conservation understandable and participatory.",
   },
@@ -37,6 +40,7 @@ const pillars = [
 const featuredWork = [
   {
     kicker: "RAPTOR",
+    image: RAPTOR_GALLERY[0],
     title: "Listening for signs of risk.",
     body: "An interdisciplinary research initiative examining how field sensors and AI-assisted detection may support human–elephant coexistence and conservation monitoring.",
     cta: "Explore RAPTOR",
@@ -44,6 +48,7 @@ const featuredWork = [
   },
   {
     kicker: "Community programmes",
+    image: OUTREACH_PHOTOS[1],
     title: "Knowledge rooted in place.",
     body: "Workshops and awareness activities invite residents and young people to discuss wildlife behaviour, reporting channels and everyday coexistence.",
     cta: "View our impact",
@@ -51,11 +56,24 @@ const featuredWork = [
   },
 ];
 
-const fieldFeatures = [
-  "What communities tell us about coexistence.",
-  "Why early warning must be designed with people.",
-  "Behind the lens: documenting human–tiger conflict.",
+const fieldFeatures: { title: string; image: Photo }[] = [
+  { title: "What communities tell us about coexistence.", image: OUTREACH_PHOTOS[2] },
+  { title: "Why early warning must be designed with people.", image: RAPTOR_GALLERY[1] },
+  { title: "Behind the lens: documenting human–tiger conflict.", image: WILDLIFE_PHOTOS[0] },
 ];
+
+// Card photo with caption kept for screen readers; captions are visible in galleries.
+const CardImage = ({ image, ratio = "aspect-[4/3]" }: { image: Photo; ratio?: string }) => (
+  <img
+    src={image.src}
+    alt={image.alt}
+    width={image.width}
+    height={image.height}
+    loading="lazy"
+    decoding="async"
+    className={`w-full ${ratio} object-cover transition-transform duration-700 group-hover:scale-105`}
+  />
+);
 
 const Index = () => {
   return (
@@ -67,20 +85,27 @@ const Index = () => {
       />
       <Navigation />
 
-      <AmbientSound
-        audioUrl="https://cdn.pixabay.com/download/audio/2022/03/10/audio_5f4ce1c24d.mp3"
-        defaultVolume={0.25}
-      />
 
       {/* HERO */}
       <section className="relative min-h-screen overflow-hidden flex items-center">
+        {/* Field photo: shown while the video loads and for visitors who prefer reduced motion. */}
+        <img
+          src={HERO_IMAGE.src}
+          srcSet={`${HERO_IMAGE.srcSmall} 1200w, ${HERO_IMAGE.src} 2400w`}
+          sizes="100vw"
+          alt=""
+          width={HERO_IMAGE.width}
+          height={HERO_IMAGE.height}
+          className="absolute inset-0 h-full w-full object-cover object-[65%_50%]"
+        />
+        {/* Background video, sized to cover the hero at any aspect ratio. */}
         <iframe
-          src="https://www.youtube.com/embed/ZSMsuqBciGo?si=HmdYHcVQlXHe8kVV&autoplay=1&mute=1&controls=0&loop=1&playlist=ZSMsuqBciGo&modestbranding=1"
-          title="Forest landscape background video"
+          src={`https://www.youtube-nocookie.com/embed/${HERO_VIDEO_ID}?autoplay=1&mute=1&controls=0&loop=1&playlist=${HERO_VIDEO_ID}&modestbranding=1&playsinline=1&rel=0`}
+          title="Background video of a tiger in the forest"
           aria-hidden="true"
           tabIndex={-1}
-          allow="autoplay; fullscreen; picture-in-picture"
-          className="absolute inset-0 h-full w-full object-cover pointer-events-none"
+          allow="autoplay; picture-in-picture"
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none border-0 w-[max(100vw,177.78vh)] h-[max(100vh,56.25vw)] motion-reduce:hidden"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-jungle-darkest/70 via-jungle-darkest/50 to-jungle-darkest" />
         <div className="absolute inset-0 bg-gradient-to-r from-jungle-darkest/80 via-jungle-darkest/30 to-transparent" />
@@ -148,11 +173,16 @@ const Index = () => {
                 key={pillar.title}
                 {...fadeUp}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="card-jungle p-8"
+                className="card-jungle overflow-hidden group"
               >
-                <pillar.icon className="w-10 h-10 text-jungle-canopy mb-6" aria-hidden="true" />
-                <h3 className="font-display text-2xl text-ivory mb-3">{pillar.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{pillar.body}</p>
+                <div className="overflow-hidden">
+                  <CardImage image={pillar.image} />
+                </div>
+                <div className="p-8">
+                  <pillar.icon className="w-9 h-9 text-jungle-canopy mb-5" aria-hidden="true" />
+                  <h3 className="font-display text-2xl text-ivory mb-3">{pillar.title}</h3>
+                  <p className="text-muted-foreground leading-relaxed">{pillar.body}</p>
+                </div>
               </motion.article>
             ))}
           </div>
@@ -170,14 +200,19 @@ const Index = () => {
                 key={item.kicker}
                 {...fadeUp}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="card-jungle p-8 flex flex-col"
+                className="card-jungle flex flex-col overflow-hidden group"
               >
+                <div className="overflow-hidden">
+                  <CardImage image={item.image} ratio="aspect-[16/9]" />
+                </div>
+                <div className="p-8 flex flex-col flex-1">
                 <p className="text-jungle-canopy uppercase tracking-[0.2em] text-xs mb-3">{item.kicker}</p>
                 <h3 className="font-display text-3xl text-ivory mb-4">{item.title}</h3>
                 <p className="text-muted-foreground leading-relaxed mb-8 flex-1">{item.body}</p>
                 <Link to={item.to} className="inline-flex items-center gap-2 text-jungle-canopy font-medium hover:gap-4 transition-all">
                   {item.cta} <ArrowRight size={16} aria-hidden="true" />
                 </Link>
+                </div>
               </motion.article>
             ))}
           </div>
@@ -217,15 +252,20 @@ const Index = () => {
             </Link>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
-            {fieldFeatures.map((title, index) => (
+            {fieldFeatures.map(({ title, image }, index) => (
               <motion.div key={title} {...fadeUp} transition={{ duration: 0.5, delay: index * 0.1 }}>
-                <Link to="/journal" className="card-jungle p-8 block h-full group">
-                  <p className="text-jungle-canopy font-display text-4xl mb-6" aria-hidden="true">
-                    0{index + 1}
-                  </p>
-                  <h3 className="font-display text-xl text-ivory group-hover:text-jungle-canopy transition-colors">
-                    {title}
-                  </h3>
+                <Link to="/journal" className="card-jungle block h-full group overflow-hidden">
+                  <div className="overflow-hidden">
+                    <CardImage image={image} />
+                  </div>
+                  <div className="p-8">
+                    <p className="text-jungle-canopy font-display text-3xl mb-4" aria-hidden="true">
+                      0{index + 1}
+                    </p>
+                    <h3 className="font-display text-xl text-ivory group-hover:text-jungle-canopy transition-colors">
+                      {title}
+                    </h3>
+                  </div>
                 </Link>
               </motion.div>
             ))}

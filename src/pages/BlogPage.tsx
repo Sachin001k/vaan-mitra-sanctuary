@@ -81,10 +81,10 @@ const BlogPage = () => {
       <Helmet>
         <title>Journal — Notes from the field | Vann Mitra Foundation</title>
         <meta name="description" content={heroDescription} />
-        <link rel="canonical" href="https://vaanmitra.org/journal" />
+        <link rel="canonical" href="https://vannmitra.org/journal" />
         <meta property="og:title" content="Journal — Notes from the field | Vann Mitra Foundation" />
         <meta property="og:description" content={heroDescription} />
-        <meta property="og:url" content="https://vaanmitra.org/journal" />
+        <meta property="og:url" content="https://vannmitra.org/journal" />
         <meta property="og:type" content="website" />
         <meta name="twitter:title" content="Journal — Notes from the field | Vann Mitra Foundation" />
         <meta name="twitter:description" content={heroDescription} />

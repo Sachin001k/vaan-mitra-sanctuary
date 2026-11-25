@@ -1,0 +1,50 @@
+[
+  {
+    "file": "atharva-agrawal.webp",
+    "name": "Atharva Agrawal",
+    "roleFromTitle": "Founder",
+    "driveId": "1FHYcnQelTPckL4N8oF6RhlPhYLR6cg7j",
+    "description": "Indoor portrait against a plain white wall, wearing a white kurta and holding a small Indian flag, framed head to mid-torso.",
+    "faceCentredOK": true
+  },
+  {
+    "file": "amreen-kaur-bhatia.webp",
+    "name": "Amreen Kaur Bhatia",
+    "roleFromTitle": null,
+    "driveId": "1Xm2_vB24bRvkJIgo8D9y7XTn-fwn0K27",
+    "description": "Outdoor selfie on a sunny beach with palm trees and a thatched building behind, wearing a blue top and sunglasses on her head, framed head and shoulders.",
+    "faceCentredOK": true
+  },
+  {
+    "file": "vanssh-badghare.webp",
+    "name": "Vanssh Badghare",
+    "roleFromTitle": null,
+    "driveId": "1gpS1VjXjTd2wSYptIAUmv7DvGGzkB2DR",
+    "description": "Evening event photo outdoors under string lights, wearing glasses, a beige blazer and white shirt, framed head to chest (low-resolution source upscaled about 2.7x).",
+    "faceCentredOK": true
+  },
+  {
+    "file": "aadvik-agrawal.webp",
+    "name": "Aadvik Agrawal",
+    "roleFromTitle": null,
+    "driveId": "1qrWvqVB_tY7pn7qn-Cuj6Ucg7hwmDoOs",
+    "description": "Indoor portrait in a grey school blazer, white shirt and striped tie with a backpack strap, against a white wall with a partial 'TRUE AS STEEL' sign at the top, framed head and shoulders.",
+    "faceCentredOK": true
+  },
+  {
+    "file": "shreya-banerjee.webp",
+    "name": "Shreya Banerjee",
+    "roleFromTitle": null,
+    "driveId": "1KvMi5L5WlCkirlcUm8ThNtTEm6ipA_gx",
+    "description": "Evening outdoor portrait on a rooftop restaurant with a deep-blue dusk sky and woven lamps behind, wearing an off-shoulder cream top, framed head and shoulders.",
+    "faceCentredOK": true
+  },
+  {
+    "file": "vihaan-gupta.webp",
+    "name": "Vihaan Gupta",
+    "roleFromTitle": null,
+    "driveId": "1wgQE909H7fEOdbidpUAeIQiC9pqfv88p",
+    "description": "Beach photo at sunset with the sea behind, wearing sunglasses and a red t-shirt and giving a thumbs-up, framed head to waist.",
+    "faceCentredOK": true
+  }
+]

@@ -12,7 +12,6 @@ const YouTubeEmbed = ({ videoId, title, className = "" }: YouTubeEmbedProps) => 
       title={title}
       loading="lazy"
       allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-      allowFullScreen
       className="absolute inset-0 h-full w-full"
     />
   </div>
