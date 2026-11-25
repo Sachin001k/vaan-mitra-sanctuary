@@ -31,6 +31,8 @@ export default {
           warm: "hsl(var(--ivory-warm))",
         },
         "off-white": "hsl(var(--off-white))",
+        charcoal: "hsl(var(--charcoal))",
+        ochre: "hsl(var(--ochre))",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

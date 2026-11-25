@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
-import { Calendar, MapPin, Users, Handshake, ExternalLink, Clock } from "lucide-react";
+import { Calendar, MapPin, Users, Handshake, Clock } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import PageMeta from "@/components/PageMeta";
+import { Link } from "react-router-dom";
 
 const teamMembers = [
   {
@@ -122,6 +124,11 @@ const eventTypeColors: Record<string, string> = {
 const TeamPage = () => {
   return (
     <div className="min-h-screen bg-background">
+      <PageMeta
+        title="Team — People behind the work"
+        description="Vann Mitra brings together young conservation advocates, volunteers, researchers and collaborators committed to responsible coexistence."
+        path="/team"
+      />
       <Navigation />
 
       {/* Hero */}
@@ -154,16 +161,41 @@ const TeamPage = () => {
           >
             <p className="text-jungle-canopy uppercase tracking-[0.3em] text-sm mb-4 flex items-center gap-2">
               <Users size={16} />
-              Our People
+              Team
             </p>
             <h1 className="font-display text-5xl md:text-7xl text-ivory mb-6">
-              The Team
+              People behind the work.
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl">
-              Meet the conservationists, scientists, and technologists working together
-              to protect India's wildlife through innovation and community action.
+              Vann Mitra brings together young conservation advocates, volunteers, researchers and
+              collaborators committed to responsible coexistence.
             </p>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Our approach + founder note */}
+      <section className="py-20 px-6 bg-jungle-darkest border-b border-jungle-medium/20">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12">
+          <div>
+            <p className="text-jungle-canopy uppercase tracking-[0.25em] text-xs md:text-sm mb-4 font-medium">Our approach</p>
+            <h2 className="font-display text-3xl md:text-4xl text-ivory mb-5">Field-based conservation is collaborative.</h2>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              Community members contribute lived experience; educators create space for learning;
+              scientists help evaluate evidence; volunteers make outreach possible. We aim to credit
+              contributions accurately and avoid presenting informal conversations as institutional
+              partnerships.
+            </p>
+          </div>
+          <div className="card-jungle p-8 self-start">
+            <p className="text-jungle-canopy uppercase tracking-[0.25em] text-xs md:text-sm mb-4 font-medium">Founder note</p>
+            <p className="text-lg text-ivory/90 leading-relaxed font-display italic">
+              Vann Mitra was created to connect an interest in wildlife with practical efforts to reduce
+              conflict and improve understanding between people and nature. Its work spans community
+              education, research and documentary storytelling.
+            </p>
+            <p className="mt-4 text-muted-foreground">— Atharva Agrawal, Founder</p>
+          </div>
         </div>
       </section>
 
@@ -382,14 +414,18 @@ const TeamPage = () => {
             viewport={{ once: true }}
           >
             <h2 className="font-display text-3xl md:text-4xl text-ivory mb-4">
-              Want to Join Our Team?
+              Join the team
             </h2>
-            <p className="text-muted-foreground mb-8">
-              We're always looking for passionate conservationists, developers, and volunteers.
+            <p className="text-muted-foreground mb-4 text-lg">
+              Interested in education, photography, data analysis, conservation communication or local
+              volunteering? Contact the team with your interests and availability.
             </p>
-            <a href="/contact" className="btn-hero inline-flex items-center gap-2">
-              Get In Touch <ExternalLink size={16} />
-            </a>
+            <p className="text-muted-foreground mb-8 text-sm">
+              Young volunteers take part with appropriate adult supervision and safeguarding.
+            </p>
+            <Link to="/contact" className="btn-hero inline-flex items-center gap-2">
+              Get in touch
+            </Link>
           </motion.div>
         </div>
       </section>

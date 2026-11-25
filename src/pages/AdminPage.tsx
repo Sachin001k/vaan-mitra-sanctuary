@@ -38,11 +38,11 @@ import {
 } from "@/components/ui/dialog";
 
 const topicChoices = [
-  "Ranger Patrols",
-  "Community Engagement",
-  "Science & Research",
-  "Photography & Storytelling",
-  "Campaigns & Policy",
+  "Field notes",
+  "Science & technology",
+  "Community voices",
+  "Policy & coexistence",
+  "Photography & film",
   "Other",
 ] as const;
 

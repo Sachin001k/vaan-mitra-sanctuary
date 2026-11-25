@@ -46,7 +46,7 @@ const BlogDetailPage = () => {
   const seoDescription = blog
     ? stripHtml(blog.description).slice(0, 160) || "Read conservation dispatches from Vann Mitra."
     : "Dispatches from Vann Mitra Foundation's wildlife patrols.";
-  const seoUrl = blog ? `https://vaanmitra.org/blog/${blog.slug}` : "https://vaanmitra.org/blog";
+  const seoUrl = blog ? `https://vaanmitra.org/journal/${blog.slug}` : "https://vaanmitra.org/journal";
   const seoImage = blog?.image_url ?? "https://vaanmitra.org/logo.png";
 
   return (
@@ -69,7 +69,7 @@ const BlogDetailPage = () => {
       <Navigation />
       <main className="mx-auto max-w-4xl space-y-10 px-6 pb-20 pt-32">
         <div>
-          <Link to="/blog" className="text-xs uppercase tracking-[0.5em] text-jungle-canopy inline-flex items-center gap-2">
+          <Link to="/journal" className="text-xs uppercase tracking-[0.5em] text-jungle-canopy inline-flex items-center gap-2">
             <ArrowLeft size={12} /> Back to Stories
           </Link>
         </div>

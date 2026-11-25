@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
+import { MotionConfig } from "framer-motion";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -18,11 +19,14 @@ const ContactPage = lazy(() => import("./pages/ContactPage"));
 const TeamPage = lazy(() => import("./pages/TeamPage"));
 const AdminPage = lazy(() => import("./pages/AdminPage"));
 const BlogDetailPage = lazy(() => import("./pages/BlogDetailPage"));
+const AawazDoPage = lazy(() => import("./pages/AawazDoPage"));
+const PrivacyPage = lazy(() => import("./pages/PrivacyPage"));
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
+    <MotionConfig reducedMotion="user">
     <TooltipProvider>
       <Toaster />
       <Sonner />
@@ -34,18 +38,23 @@ const App = () => (
             <Route path="/maps" element={<MapsPage />} />
             <Route path="/impact" element={<ImpactPage />} />
             <Route path="/photography" element={<PhotographyPage />} />
+            <Route path="/journal" element={<BlogPage />} />
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/donate" element={<DonatePage />} />
             <Route path="/team" element={<TeamPage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/blog/:slug" element={<BlogDetailPage />} />
+            <Route path="/journal/:slug" element={<BlogDetailPage />} />
+            <Route path="/aawaz-do" element={<AawazDoPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
       </BrowserRouter>
     </TooltipProvider>
+    </MotionConfig>
   </QueryClientProvider>
 );
 

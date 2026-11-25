@@ -1,134 +1,103 @@
 import { Link } from "react-router-dom";
-import { Instagram, Facebook, Twitter, Youtube, Mail } from "lucide-react";
+import { Mail, ExternalLink } from "lucide-react";
+import { CONTACT_EMAIL, RESEARCH_LINKS } from "@/data/siteLinks";
+
+const exploreLinks = [
+  { to: "/", label: "Home" },
+  { to: "/raptor", label: "RAPTOR" },
+  { to: "/maps", label: "Maps" },
+  { to: "/impact", label: "Impact" },
+  { to: "/photography", label: "Photography" },
+  { to: "/team", label: "Team" },
+  { to: "/journal", label: "Journal" },
+];
+
+const involvedLinks = [
+  { to: "/contact", label: "Volunteer" },
+  { to: "/contact", label: "Collaborate with us" },
+  { to: "/aawaz-do", label: "Aawaz Do — share a concern" },
+  { to: "/donate", label: "Donate" },
+];
+
+const linkClass = "text-muted-foreground hover:text-jungle-canopy transition-colors text-sm";
 
 const Footer = () => {
-  return (
-    <footer className="bg-jungle-darkest border-t border-jungle-medium/30">
-      {/* Quote Section */}
-      <div className="py-16 px-6 text-center border-b border-jungle-medium/20">
-        <blockquote className="max-w-3xl mx-auto">
-          <p className="font-display text-2xl md:text-3xl text-ivory italic leading-relaxed">
-            "In every walk with nature, one receives far more than he seeks."
-          </p>
-          <cite className="block mt-4 text-jungle-canopy font-medium not-italic">
-            — John Muir
-          </cite>
-        </blockquote>
-      </div>
+  const year = new Date().getFullYear();
 
-      {/* Main Footer Content */}
+  return (
+    <footer className="bg-charcoal border-t border-jungle-medium/30">
       <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* About */}
-          <div>
+          <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-4">
-              <img
-                src="/logo.png"
-                alt="Vann Mitra logo"
-                className="h-12 w-12 object-contain"
-              />
+              <img src="/logo.png" alt="" className="h-12 w-12 object-contain" />
               <div>
-                <h3 className="font-display text-xl text-ivory">Vann Mitra</h3>
-                <p className="text-muted-foreground text-xs uppercase tracking-[0.4em]">
-                  Wildlife Conservation
-                </p>
+                <p className="font-display text-xl text-ivory">Vann Mitra Foundation</p>
               </div>
             </div>
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              A network of young conservationists, scientists, and NGOs working 
-              together to protect wildlife and mitigate human-animal conflict 
-              through technology-driven solutions.
-            </p>
+            <p className="font-display italic text-jungle-canopy">Living alongside wildlife.</p>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h4 className="font-semibold text-ivory uppercase tracking-wider text-sm mb-4">
-              Explore
-            </h4>
+          {/* Explore */}
+          <nav aria-label="Explore">
+            <h2 className="font-body font-semibold text-ivory uppercase tracking-wider text-sm mb-4">Explore</h2>
             <ul className="space-y-2">
-              {["RAPTOR", "Maps", "Impact", "Photography", "Blog"].map((item) => (
-                <li key={item}>
-                  <Link
-                    to={`/${item.toLowerCase()}`}
-                    className="text-muted-foreground hover:text-jungle-canopy transition-colors text-sm"
-                  >
-                    {item}
-                  </Link>
+              {exploreLinks.map((item) => (
+                <li key={item.to}>
+                  <Link to={item.to} className={linkClass}>{item.label}</Link>
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
 
-          {/* Get Involved */}
+          {/* Get involved */}
+          <nav aria-label="Get involved">
+            <h2 className="font-body font-semibold text-ivory uppercase tracking-wider text-sm mb-4">Get involved</h2>
+            <ul className="space-y-2">
+              {involvedLinks.map((item) => (
+                <li key={item.label}>
+                  <Link to={item.to} className={linkClass}>{item.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* Research & media */}
+          <nav aria-label="Research and media">
+            <h2 className="font-body font-semibold text-ivory uppercase tracking-wider text-sm mb-4">Research &amp; media</h2>
+            <ul className="space-y-2">
+              {RESEARCH_LINKS.map((item) => (
+                <li key={item.href}>
+                  <a href={item.href} target="_blank" rel="noreferrer" className={`${linkClass} inline-flex items-center gap-1`}>
+                    {item.label} <ExternalLink size={12} aria-hidden="true" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* Contact */}
           <div>
-            <h4 className="font-semibold text-ivory uppercase tracking-wider text-sm mb-4">
-              Get Involved
-            </h4>
+            <h2 className="font-body font-semibold text-ivory uppercase tracking-wider text-sm mb-4">Contact</h2>
             <ul className="space-y-2">
               <li>
-                <Link to="/donate" className="text-muted-foreground hover:text-jungle-canopy transition-colors text-sm">
-                  Donate
-                </Link>
+                <a href={`mailto:${CONTACT_EMAIL}`} className={`${linkClass} inline-flex items-center gap-2 break-all`}>
+                  <Mail size={14} aria-hidden="true" /> {CONTACT_EMAIL}
+                </a>
               </li>
               <li>
-                <Link to="/contact" className="text-muted-foreground hover:text-jungle-canopy transition-colors text-sm">
-                  Contact Us
-                </Link>
-              </li>
-              <li>
-                <span className="text-muted-foreground text-sm">Volunteer</span>
-              </li>
-              <li>
-                <span className="text-muted-foreground text-sm">Partner With Us</span>
+                <Link to="/contact" className={linkClass}>Start a conversation</Link>
               </li>
             </ul>
           </div>
-
-          {/* Newsletter */}
-          <div>
-            <h4 className="font-semibold text-ivory uppercase tracking-wider text-sm mb-4">
-              Stay Connected
-            </h4>
-            <p className="text-muted-foreground text-sm mb-4">
-              Subscribe for conservation updates and wildlife stories.
-            </p>
-            <div className="flex gap-2">
-              <input
-                type="email"
-                placeholder="Your email"
-                className="input-jungle flex-1 text-xs py-3"
-              />
-              <button className="btn-hero px-4 py-3 text-xs">
-                <Mail size={16} />
-              </button>
-            </div>
-          </div>
         </div>
 
-        {/* Social Links & Copyright */}
-        <div className="mt-16 pt-8 border-t border-jungle-medium/20 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex gap-4">
-            {[
-              { icon: Instagram, label: "Instagram" },
-              { icon: Facebook, label: "Facebook" },
-              { icon: Twitter, label: "Twitter" },
-              { icon: Youtube, label: "Youtube" },
-            ].map(({ icon: Icon, label }) => (
-              <a
-                key={label}
-                href="#"
-                aria-label={label}
-                className="p-3 bg-jungle-deep hover:bg-jungle-medium transition-colors text-ivory"
-              >
-                <Icon size={18} />
-              </a>
-            ))}
-          </div>
-
+        <div className="mt-14 pt-8 border-t border-jungle-medium/20 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-muted-foreground text-sm text-center">
-            © 2026 Vann Mitra Foundation. All rights reserved.
+            © {year} Vann Mitra Foundation. All rights reserved.
           </p>
+          <Link to="/privacy" className={linkClass}>Privacy</Link>
         </div>
       </div>
     </footer>

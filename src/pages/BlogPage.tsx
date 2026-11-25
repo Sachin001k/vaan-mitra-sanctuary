@@ -41,7 +41,7 @@ const formatDate = (value: string | null | undefined) => {
 };
 
 const BlogPage = () => {
-  const heroDescription = "Field notes, patrol recaps, and science updates from Vann Mitra’s wild spaces.";
+  const heroDescription = "Essays, field observations, conservation research explainers and behind-the-scenes stories exploring the realities of living alongside wildlife.";
   const [selectedCategory, setSelectedCategory] = useState("All Stories");
   const { data: blogs = [], isLoading, error } = useQuery({
     queryKey: ["blogs"],
@@ -79,14 +79,14 @@ const BlogPage = () => {
   return (
     <>
       <Helmet>
-        <title>Tracks & Tales | Latest stories from the Vann Mitra Foundation</title>
+        <title>Journal — Notes from the field | Vann Mitra Foundation</title>
         <meta name="description" content={heroDescription} />
-        <link rel="canonical" href="https://vaanmitra.org/blog" />
-        <meta property="og:title" content="Tracks & Tales | Stories from Vann Mitra" />
+        <link rel="canonical" href="https://vaanmitra.org/journal" />
+        <meta property="og:title" content="Journal — Notes from the field | Vann Mitra Foundation" />
         <meta property="og:description" content={heroDescription} />
-        <meta property="og:url" content="https://vaanmitra.org/blog" />
+        <meta property="og:url" content="https://vaanmitra.org/journal" />
         <meta property="og:type" content="website" />
-        <meta name="twitter:title" content="Tracks & Tales | Vann Mitra stories" />
+        <meta name="twitter:title" content="Journal — Notes from the field | Vann Mitra Foundation" />
         <meta name="twitter:description" content={heroDescription} />
       </Helmet>
       <div className="min-h-screen bg-background">
@@ -100,11 +100,11 @@ const BlogPage = () => {
             transition={{ duration: 0.6 }}
           >
             <p className="text-jungle-canopy uppercase tracking-[0.3em] text-sm mb-4">
-              Stories from the Wild
+              Journal
             </p>
-            <h1 className="font-display text-5xl md:text-7xl text-ivory mb-6">Tracks & Tales</h1>
+            <h1 className="font-display text-5xl md:text-7xl text-ivory mb-6">Notes from the field.</h1>
             <p className="text-xl text-muted-foreground max-w-3xl">
-              Field notes, conservation stories, and insights from our work protecting India's wildlife.
+              {heroDescription}
             </p>
           </motion.div>
         </div>
@@ -113,7 +113,7 @@ const BlogPage = () => {
       <section className="py-12 px-6 bg-jungle-darkest">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="font-display text-2xl text-ivory">Featured Stories</h2>
+            <h2 className="font-display text-2xl text-ivory">Featured</h2>
             {isLoading && <span className="text-xs text-muted-foreground">Loading...</span>}
             {error && <span className="text-xs text-destructive">Unable to load stories.</span>}
           </div>
@@ -180,12 +180,10 @@ const BlogPage = () => {
                   </div>
 
                   <a
-                    href={`/blog/${post.slug}`}
-                    target="_blank"
-                    rel="noreferrer"
+                    href={`/journal/${post.slug}`}
                     className="inline-flex items-center gap-2 text-jungle-canopy text-sm font-medium hover:gap-4 transition-all"
                   >
-                    Read More <span aria-hidden="true">↗</span>
+                    Read more <span aria-hidden="true">→</span>
                   </a>
                 </div>
               </motion.article>
@@ -288,12 +286,10 @@ const BlogPage = () => {
                         </div>
 
                         <a
-                          href={`/blog/${post.slug}`}
-                          target="_blank"
-                          rel="noreferrer"
+                          href={`/journal/${post.slug}`}
                           className="inline-flex items-center gap-2 text-jungle-canopy text-sm font-medium hover:gap-4 transition-all"
                         >
-                          Read Story <span aria-hidden="true">↗</span>
+                          Read story <span aria-hidden="true">→</span>
                         </a>
                       </div>
                     </motion.article>

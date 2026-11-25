@@ -2,8 +2,40 @@ import { motion } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AnimatedCounter from "@/components/AnimatedCounter";
-import { Shield, TreePine, Heart, Users, Globe } from "lucide-react";
+import { Shield, TreePine, Heart, Users, Globe, GraduationCap, Ear, Film, FlaskConical } from "lucide-react";
+import PageMeta from "@/components/PageMeta";
+import SectionHeader from "@/components/SectionHeader";
 import elephantImage from "@/assets/elephant.jpg";
+
+const programmes = [
+  {
+    icon: GraduationCap,
+    title: "Community education",
+    body: "Sessions introducing wildlife behaviour, safer reporting practices and coexistence principles in schools and villages.",
+  },
+  {
+    icon: Ear,
+    title: "Field listening",
+    body: "Interviews and discussions about crop loss, livestock risks, movement, compensation and the daily costs of sharing landscapes with wildlife. These are qualitative insights, not representative surveys.",
+  },
+  {
+    icon: Film,
+    title: "Conservation storytelling",
+    body: "Screenings and discussions around Fault Line, connecting the film to practical local questions and community perspectives.",
+  },
+  {
+    icon: FlaskConical,
+    title: "Research and experimentation",
+    body: "RAPTOR prototype testing and documented research milestones.",
+  },
+];
+
+const measurement = [
+  { level: "Activities", body: "Sessions held, participants attending, materials distributed, locations visited." },
+  { level: "Outputs", body: "Feedback collected, trained volunteers, prototype tests completed." },
+  { level: "Outcomes", body: "Changes in awareness or reporting, adoption of practices, validated response improvements." },
+  { level: "Long-term impact", body: "Independently documented reductions in harm — never inferred from activity totals alone." },
+];
 
 const ImpactPage = () => {
   const stats = [
@@ -69,6 +101,11 @@ const ImpactPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <PageMeta
+        title="Impact — Work measured in people, places and learning"
+        description="Community education, field listening, conservation storytelling and RAPTOR research: how Vann Mitra Foundation works and how we measure it."
+        path="/impact"
+      />
       <Navigation />
 
       {/* Hero */}
@@ -76,7 +113,7 @@ const ImpactPage = () => {
         <div className="absolute inset-0">
           <img
             src={elephantImage}
-            alt="Elephant"
+            alt=""
             className="w-full h-full object-cover opacity-20"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-jungle-darkest via-jungle-dark/90 to-jungle-darkest" />
@@ -89,16 +126,57 @@ const ImpactPage = () => {
             transition={{ duration: 0.6 }}
           >
             <p className="text-jungle-canopy uppercase tracking-[0.3em] text-sm mb-4">
-              Conservation in Action
+              Impact
             </p>
-            <h1 className="font-display text-5xl md:text-7xl text-ivory mb-6">
-              Our Impact
+            <h1 className="font-display text-5xl md:text-7xl text-ivory mb-6 max-w-4xl">
+              Work measured in people, places and learning.
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl">
-              Every number tells a story of hope. From rescued animals to protected 
-              habitats, see how your support translates into real-world conservation.
+              We document community engagement, conservation education, research activity and field
+              experience—while distinguishing activity counts from demonstrated conservation outcomes.
             </p>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Programmes */}
+      <section className="py-20 px-6 bg-jungle-darkest">
+        <div className="max-w-7xl mx-auto">
+          <SectionHeader eyebrow="Programmes" title="What we do" />
+          <div className="grid md:grid-cols-2 gap-6">
+            {programmes.map((item, index) => (
+              <motion.article
+                key={item.title}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.08 }}
+                viewport={{ once: true }}
+                className="card-jungle p-8"
+              >
+                <item.icon className="w-10 h-10 text-jungle-canopy mb-5" aria-hidden="true" />
+                <h3 className="font-display text-2xl text-ivory mb-3">{item.title}</h3>
+                <p className="text-muted-foreground leading-relaxed">{item.body}</p>
+              </motion.article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Measurement framework */}
+      <section className="py-20 px-6 bg-jungle-deep border-y border-jungle-medium/20">
+        <div className="max-w-7xl mx-auto">
+          <SectionHeader eyebrow="Measurement framework" title="How we count what matters">
+            <p>Each level needs its own evidence. Activity totals alone are never presented as conservation outcomes.</p>
+          </SectionHeader>
+          <ol className="grid md:grid-cols-4 gap-4">
+            {measurement.map((item, index) => (
+              <li key={item.level} className="bg-jungle-dark border border-jungle-medium/40 p-6">
+                <p className="text-jungle-canopy font-display text-3xl mb-3" aria-hidden="true">0{index + 1}</p>
+                <h3 className="font-display text-xl text-ivory mb-2">{item.level}</h3>
+                <p className="text-muted-foreground">{item.body}</p>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 

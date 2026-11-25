@@ -1,448 +1,290 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Globe, Binoculars, Heart, Camera } from "lucide-react";
-import AnimatedCounter from "@/components/AnimatedCounter";
+import { ArrowRight, Users, Radio, Megaphone, ExternalLink } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import AmbientSound from "@/components/AmbientSound";
-import {
-  photoPortfolio,
-  missionHighlights,
-  featuredSpecies,
-} from "@/data/localPhotos";
+import PageMeta from "@/components/PageMeta";
+import SectionHeader from "@/components/SectionHeader";
+import YouTubeEmbed from "@/components/YouTubeEmbed";
+import { FAULT_LINE_VIDEO_ID, IEEE_PAPER_URL, PRESS_LINKS } from "@/data/siteLinks";
+
+const fadeUp = {
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.5 },
+};
+
+const pillars = [
+  {
+    icon: Users,
+    title: "People & coexistence",
+    body: "Community conversations, local education, field observations and accessible information that help residents understand risks and response pathways.",
+  },
+  {
+    icon: Radio,
+    title: "Research & technology",
+    body: "RAPTOR explores acoustic and visual monitoring to identify possible threats and support timely human review; it is a research system, not a replacement for trained responders.",
+  },
+  {
+    icon: Megaphone,
+    title: "Awareness & action",
+    body: "Documentary storytelling, student outreach, photography and volunteering make conservation understandable and participatory.",
+  },
+];
+
+const featuredWork = [
+  {
+    kicker: "RAPTOR",
+    title: "Listening for signs of risk.",
+    body: "An interdisciplinary research initiative examining how field sensors and AI-assisted detection may support human–elephant coexistence and conservation monitoring.",
+    cta: "Explore RAPTOR",
+    to: "/raptor",
+  },
+  {
+    kicker: "Community programmes",
+    title: "Knowledge rooted in place.",
+    body: "Workshops and awareness activities invite residents and young people to discuss wildlife behaviour, reporting channels and everyday coexistence.",
+    cta: "View our impact",
+    to: "/impact",
+  },
+];
+
+const fieldFeatures = [
+  "What communities tell us about coexistence.",
+  "Why early warning must be designed with people.",
+  "Behind the lens: documenting human–tiger conflict.",
+];
 
 const Index = () => {
-  const photographyCards = photoPortfolio;
-
   return (
     <div className="min-h-screen bg-background">
+      <PageMeta
+        title="Living alongside wildlife"
+        description="Vann Mitra Foundation brings community knowledge, field research, conservation education and emerging technology together to support coexistence between people and wildlife in India."
+        path="/"
+      />
       <Navigation />
-      
-      {/* Ambient Jungle Sound Controller */}
-      <AmbientSound 
+
+      <AmbientSound
         audioUrl="https://cdn.pixabay.com/download/audio/2022/03/10/audio_5f4ce1c24d.mp3"
         defaultVolume={0.25}
       />
 
-      {/* Hero Section with YouTube Video Background */}
-      <section className="relative h-screen overflow-hidden">
+      {/* HERO */}
+      <section className="relative min-h-screen overflow-hidden flex items-center">
         <iframe
           src="https://www.youtube.com/embed/ZSMsuqBciGo?si=HmdYHcVQlXHe8kVV&autoplay=1&mute=1&controls=0&loop=1&playlist=ZSMsuqBciGo&modestbranding=1"
-          title="Vann Mitra Foundation Hero"
+          title="Forest landscape background video"
+          aria-hidden="true"
+          tabIndex={-1}
           allow="autoplay; fullscreen; picture-in-picture"
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover pointer-events-none"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-jungle-darkest/60 via-transparent to-jungle-darkest/90" />
-        <div className="absolute inset-0 bg-gradient-to-r from-jungle-darkest/70 via-transparent to-jungle-darkest/50" />
+        <div className="absolute inset-0 bg-gradient-to-b from-jungle-darkest/70 via-jungle-darkest/50 to-jungle-darkest" />
+        <div className="absolute inset-0 bg-gradient-to-r from-jungle-darkest/80 via-jungle-darkest/30 to-transparent" />
 
-        {/* Floating particles effect */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(30)].map((_, i) => (
-            <motion.div
-              key={`particle-${i}`}
-              className="absolute w-1 h-1 bg-jungle-canopy/30"
-              initial={{
-                x: Math.random() * (typeof window !== "undefined" ? window.innerWidth : 1000),
-                y: -10,
-              }}
-              animate={{
-                y: (typeof window !== "undefined" ? window.innerHeight : 800) + 10,
-                x: `+=${Math.random() * 100 - 50}`,
-              }}
-              transition={{
-                duration: 12 + Math.random() * 10,
-                repeat: Infinity,
-                delay: Math.random() * 10,
-                ease: "linear",
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Hero Content */}
-        <div className="relative z-10 h-full flex items-center justify-center">
-          <div className="text-center px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <p className="text-jungle-canopy uppercase tracking-[0.3em] text-sm mb-6 font-medium">
-                Conservation Through Connection
-              </p>
-            </motion.div>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="font-display text-4xl md:text-6xl lg:text-7xl text-ivory leading-tight mb-8 drop-shadow-2xl"
-            >
-              Where forest songs and footsteps blend,
-              <br />
-              <span className="text-gradient-jungle">we walk the wild;</span>
-              <br />
-              we call it friend.
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-lg text-ivory/90 max-w-2xl mx-auto mb-12 drop-shadow-lg"
-            >
-              A network of 15+ young conservationists, scientists, and NGOs
-              protecting wildlife through technology-driven solutions since 2024.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center"
-            >
-              <Link to="/raptor" className="btn-hero flex items-center gap-2">
-                <Binoculars size={18} />
-                Explore Wildlife
-              </Link>
-              <Link to="/maps" className="btn-ghost flex items-center gap-2">
-                <Globe size={18} />
-                View Global Map
-              </Link>
-              <Link to="/donate" className="btn-ghost flex items-center gap-2">
-                <Heart size={18} />
-                Join the Cause
-              </Link>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Photography + Species Summaries Section */}
-      <section className="py-16 px-6 bg-jungle-dark border-b border-jungle-medium/20">
-        <div className="max-w-7xl mx-auto">
+        <div className="relative z-10 max-w-7xl mx-auto w-full px-6 pt-32 pb-20">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="flex flex-col md:flex-row md:items-center md:justify-between mb-10"
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="max-w-3xl"
           >
-            <div>
-              <p className="text-jungle-canopy uppercase tracking-[0.3em] text-xs mb-2 flex items-center gap-2">
-                <Camera size={14} />
-                Vann Mitra Spotlights
-              </p>
-              <h2 className="font-display text-3xl md:text-4xl text-ivory">
-                Photography + Species Summaries
-              </h2>
-            </div>
-            <Link
-              to="/photography"
-              className="mt-4 md:mt-0 flex items-center gap-2 text-jungle-canopy hover:gap-4 transition-all text-sm"
-            >
-              View Full Gallery <ArrowRight size={16} />
-            </Link>
-          </motion.div>
-
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {photographyCards.slice(0, 8).map((card, index) => (
-              <motion.article
-                key={card.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                viewport={{ once: true }}
-                className="bg-jungle-deep border border-jungle-medium/30 overflow-hidden group"
-              >
-                <div className="relative aspect-square overflow-hidden">
-                  <img
-                    src={card.image}
-                    alt={card.species}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-jungle-darkest/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
-                <div className="p-4">
-                  <h3 className="font-display text-lg text-ivory mb-1">{card.species}</h3>
-                  <p className="text-xs text-jungle-canopy uppercase tracking-wider mb-2">
-                    {card.location}
-                  </p>
-                  <p className="text-xs text-muted-foreground line-clamp-2">
-                    {card.summary}
-                  </p>
-                </div>
-              </motion.article>
-            ))}
-            {photographyCards.length === 0 && (
-              <div className="col-span-full text-center py-8">
-                <p className="text-muted-foreground text-sm">Loading wildlife photography...</p>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Rangoli Divider */}
-      <div className="relative py-6 bg-jungle-darkest overflow-hidden">
-        <div className="flex items-center justify-center gap-4">
-          <div className="h-px flex-1 max-w-[200px] bg-gradient-to-r from-transparent to-jungle-canopy/40" />
-          <motion.div
-            className="text-2xl animate-rangoli-spin"
-            animate={{ rotate: 360 }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          >
-            ✦
-          </motion.div>
-          <motion.div className="text-jungle-canopy text-lg animate-wiggle">❋</motion.div>
-          <motion.div
-            className="text-2xl animate-rangoli-spin"
-            animate={{ rotate: -360 }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          >
-            ✦
-          </motion.div>
-          <div className="h-px flex-1 max-w-[200px] bg-gradient-to-l from-transparent to-jungle-canopy/40" />
-        </div>
-        {/* Floating fireflies */}
-        {[...Array(8)].map((_, i) => (
-          <motion.div
-            key={`firefly-${i}`}
-            className="absolute w-1.5 h-1.5 bg-yellow-400/60"
-            style={{
-              left: `${10 + Math.random() * 80}%`,
-              top: `${10 + Math.random() * 80}%`,
-            }}
-            animate={{
-              opacity: [0.2, 1, 0.2],
-              scale: [0.8, 1.3, 0.8],
-              x: [0, (Math.random() - 0.5) * 30, 0],
-              y: [0, (Math.random() - 0.5) * 20, 0],
-            }}
-            transition={{
-              duration: 2 + Math.random() * 2,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Mission Section */}
-      <section className="py-24 px-6 bg-jungle-darkest">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="font-display text-4xl md:text-5xl text-ivory mb-6">
-              Our Mission
-            </h2>
-            <p className="text-muted-foreground max-w-3xl mx-auto text-lg">
-              Vann Mitra Foundation was born in 2024 as a project to protect wildlife
-              and the jungle. Registered as an NGO in 2025, we now work with
-              conservationists, scientists, government officials, and other NGOs to
-              create lasting change.
+            <p className="text-jungle-canopy uppercase tracking-[0.25em] text-xs md:text-sm mb-6 font-medium">
+              Vann Mitra Foundation · People and wildlife, together
             </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {missionHighlights.map((item, index) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="stat-card group hover:border-jungle-amazon transition-all duration-300 overflow-hidden"
-              >
-                <div className="relative h-48 -mx-8 -mt-8 mb-6 overflow-hidden">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-jungle-deep to-transparent" />
-                </div>
-                <h3 className="font-display text-xl text-ivory mb-2">{item.title}</h3>
-                <p className="text-xs uppercase tracking-[0.4em] text-jungle-canopy mb-3">
-                  {item.year}
-                </p>
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  {item.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Leaf Divider */}
-      <div className="relative py-4 bg-jungle-deep overflow-hidden flex items-center justify-center gap-6">
-        <motion.span className="text-2xl animate-leaf-sway" style={{ animationDelay: "0s" }}>🍃</motion.span>
-        <motion.span className="text-xl animate-leaf-sway" style={{ animationDelay: "0.5s" }}>🌿</motion.span>
-        <motion.span className="text-2xl animate-leaf-sway" style={{ animationDelay: "1s" }}>🍃</motion.span>
-        <motion.span className="text-xl animate-leaf-sway" style={{ animationDelay: "1.5s" }}>🌿</motion.span>
-        <motion.span className="text-2xl animate-leaf-sway" style={{ animationDelay: "2s" }}>🍃</motion.span>
-      </div>
-
-      {/* Featured Species */}
-      <section className="py-24 px-6 bg-jungle-deep">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="flex flex-col md:flex-row justify-between items-end mb-16"
-          >
-            <div>
-              <p className="text-jungle-canopy uppercase tracking-widest text-sm mb-2">
-                Featured Species
-              </p>
-              <h2 className="font-display text-4xl md:text-5xl text-ivory">
-                India's Magnificent Wildlife
-              </h2>
+            <h1 className="font-display text-5xl md:text-7xl text-ivory leading-tight mb-8">
+              Living alongside wildlife.
+            </h1>
+            <p className="text-lg md:text-xl text-ivory/90 leading-relaxed mb-10">
+              Forests do not end where villages begin. Across India, people and wildlife share
+              landscapes, water, routes and resources. Vann Mitra Foundation works at this
+              intersection—bringing community knowledge, field research, conservation education and
+              emerging technology together to support coexistence.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link to="/impact" className="btn-hero gap-2">
+                Explore our work <ArrowRight size={18} aria-hidden="true" />
+              </Link>
+              <Link to="/raptor" className="btn-ghost gap-2">
+                Discover RAPTOR <ArrowRight size={18} aria-hidden="true" />
+              </Link>
             </div>
-            <Link
-              to="/raptor"
-              className="mt-4 md:mt-0 flex items-center gap-2 text-jungle-canopy hover:gap-4 transition-all"
-            >
-              View All Species <ArrowRight size={18} />
-            </Link>
           </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {featuredSpecies.map((animal, index) => (
-              <motion.div
-                key={animal.slug}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="card-jungle group overflow-hidden"
-              >
-                <div className="relative aspect-[4/5] overflow-hidden">
-                  <img
-                    src={animal.image}
-                    alt={animal.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-jungle-darkest via-transparent to-transparent opacity-80" />
-                  <div className="absolute bottom-6 left-6 right-6">
-                    <h3 className="font-display text-2xl text-ivory">{animal.name}</h3>
-                    <p className="text-jungle-canopy text-lg font-semibold">
-                      {animal.count} in the wild
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </section>
 
-      {/* Live Stats Section */}
-      <section className="py-24 px-6 bg-jungle-darkest border-y border-jungle-medium/30">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <p className="text-destructive uppercase tracking-widest text-sm mb-2 flex items-center justify-center gap-2">
-              <span className="w-2 h-2 bg-destructive animate-pulse" />
-              Live Counter
+      {/* 01 — WHY COEXISTENCE MATTERS */}
+      <section className="py-24 px-6 bg-jungle-darkest">
+        <motion.div {...fadeUp} className="max-w-7xl mx-auto grid lg:grid-cols-[1fr_1.4fr] gap-12 items-start">
+          <div>
+            <p className="text-jungle-canopy uppercase tracking-[0.25em] text-xs md:text-sm mb-4 font-medium">
+              Why coexistence matters
             </p>
             <h2 className="font-display text-4xl md:text-5xl text-ivory">
-              The Cost of Inaction
+              Conservation begins with coexistence.
             </h2>
-          </motion.div>
+          </div>
+          <p className="text-lg text-muted-foreground leading-relaxed">
+            Human–wildlife conflict is not simply a question of animal encounters. Crop damage,
+            livestock losses, uncertainty around movement, interrupted education and fear can affect
+            households living close to wildlife habitat. Conservation responses must therefore
+            address livelihoods and public safety alongside the ecological needs of species. Vann
+            Mitra supports practical, community-informed approaches: listening first, identifying
+            local risks, communicating responsibly and testing preventive solutions.
+          </p>
+        </motion.div>
+      </section>
 
-          <div className="grid md:grid-cols-4 gap-6">
-            <div className="stat-card animate-pulse-glow">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">
-                Animals Poached (2024)
-              </p>
-              <AnimatedCounter
-                end={38247}
-                className="font-display text-4xl text-destructive"
-              />
-            </div>
-            <div className="stat-card">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">
-                Species Extinct (Century)
-              </p>
-              <AnimatedCounter
-                end={543}
-                className="font-display text-4xl text-jungle-tropical"
-              />
-            </div>
-            <div className="stat-card">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">
-                Hectares Deforested
-              </p>
-              <AnimatedCounter
-                end={4200000}
-                suffix="+"
-                className="font-display text-4xl text-jungle-amazon"
-              />
-            </div>
-            <div className="stat-card border-jungle-amazon">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">
-                Species We Can Save
-              </p>
-              <AnimatedCounter
-                end={41415}
-                className="font-display text-4xl text-jungle-canopy"
-              />
-            </div>
+      {/* 02 — THREE PILLARS */}
+      <section className="py-24 px-6 bg-jungle-dark border-y border-jungle-medium/20">
+        <div className="max-w-7xl mx-auto">
+          <SectionHeader eyebrow="Our work brings together" title="Three areas of practice" />
+          <div className="grid md:grid-cols-3 gap-6">
+            {pillars.map((pillar, index) => (
+              <motion.article
+                key={pillar.title}
+                {...fadeUp}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="card-jungle p-8"
+              >
+                <pillar.icon className="w-10 h-10 text-jungle-canopy mb-6" aria-hidden="true" />
+                <h3 className="font-display text-2xl text-ivory mb-3">{pillar.title}</h3>
+                <p className="text-muted-foreground leading-relaxed">{pillar.body}</p>
+              </motion.article>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-32 px-6 relative overflow-hidden">
-        {/* Background from a local photograph */}
-        <div className="absolute inset-0">
-          <img
-            src={featuredSpecies[0]?.image}
-            alt="Tiger"
-            className="w-full h-full object-cover opacity-20"
-          />
-          <div className="absolute inset-0 bg-jungle-darkest/90" />
-        </div>
+      {/* 03 — FEATURED WORK */}
+      <section className="py-24 px-6 bg-jungle-darkest">
+        <div className="max-w-7xl mx-auto">
+          <SectionHeader eyebrow="Featured work" title="What we are working on" />
 
-        <div className="relative z-10 max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="font-display text-4xl md:text-6xl text-ivory mb-6">
-              Every Voice Matters
-            </h2>
-            <p className="text-lg text-ivory/80 mb-10 max-w-2xl mx-auto">
-              Join the movement. Whether you donate, volunteer, or simply spread
-              awareness—your action creates ripples that can save species.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/donate" className="btn-hero">
-                Support Our Mission
-              </Link>
-              <Link to="/contact" className="btn-ghost">
-                Get In Touch
-              </Link>
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            {featuredWork.map((item, index) => (
+              <motion.article
+                key={item.kicker}
+                {...fadeUp}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="card-jungle p-8 flex flex-col"
+              >
+                <p className="text-jungle-canopy uppercase tracking-[0.2em] text-xs mb-3">{item.kicker}</p>
+                <h3 className="font-display text-3xl text-ivory mb-4">{item.title}</h3>
+                <p className="text-muted-foreground leading-relaxed mb-8 flex-1">{item.body}</p>
+                <Link to={item.to} className="inline-flex items-center gap-2 text-jungle-canopy font-medium hover:gap-4 transition-all">
+                  {item.cta} <ArrowRight size={16} aria-hidden="true" />
+                </Link>
+              </motion.article>
+            ))}
+          </div>
+
+          {/* Fault Line */}
+          <motion.article {...fadeUp} className="card-jungle grid lg:grid-cols-2">
+            <YouTubeEmbed videoId={FAULT_LINE_VIDEO_ID} title="Fault Line — a human–tiger conflict documentary" />
+            <div className="p-8 flex flex-col justify-center">
+              <p className="text-jungle-canopy uppercase tracking-[0.2em] text-xs mb-3">Fault Line</p>
+              <h3 className="font-display text-3xl text-ivory mb-4">A human–tiger conflict documentary.</h3>
+              <p className="text-muted-foreground leading-relaxed mb-8">
+                Explore the experiences of people living near tiger landscapes through film and
+                first-hand perspectives.
+              </p>
+              <a
+                href={`https://www.youtube.com/watch?v=${FAULT_LINE_VIDEO_ID}`}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 text-jungle-canopy font-medium hover:gap-4 transition-all"
+              >
+                Watch the documentary <ExternalLink size={16} aria-hidden="true" />
+              </a>
             </div>
-          </motion.div>
+          </motion.article>
         </div>
+      </section>
+
+      {/* 04 — FROM THE FIELD */}
+      <section className="py-24 px-6 bg-jungle-dark border-y border-jungle-medium/20">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between">
+            <SectionHeader eyebrow="From the field" title="Stories from the field">
+              <p>Photography, documentaries and first-hand perspectives on the relationship between people and wildlife.</p>
+            </SectionHeader>
+            <Link to="/journal" className="mb-12 inline-flex items-center gap-2 text-jungle-canopy font-medium hover:gap-4 transition-all">
+              Read and explore <ArrowRight size={16} aria-hidden="true" />
+            </Link>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {fieldFeatures.map((title, index) => (
+              <motion.div key={title} {...fadeUp} transition={{ duration: 0.5, delay: index * 0.1 }}>
+                <Link to="/journal" className="card-jungle p-8 block h-full group">
+                  <p className="text-jungle-canopy font-display text-4xl mb-6" aria-hidden="true">
+                    0{index + 1}
+                  </p>
+                  <h3 className="font-display text-xl text-ivory group-hover:text-jungle-canopy transition-colors">
+                    {title}
+                  </h3>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* PRESS / RESEARCH */}
+      <section className="py-20 px-6 bg-jungle-darkest">
+        <div className="max-w-7xl mx-auto">
+          <SectionHeader eyebrow="Press & research" title="In the news" />
+          <ul className="grid md:grid-cols-3 gap-6">
+            {PRESS_LINKS.map((item) => (
+              <li key={item.href}>
+                <a href={item.href} target="_blank" rel="noreferrer" className="card-jungle p-6 block h-full group">
+                  <p className="text-jungle-canopy uppercase tracking-[0.2em] text-xs mb-3">{item.outlet}</p>
+                  <p className="text-ivory font-display text-lg group-hover:text-jungle-canopy transition-colors">
+                    {item.title}
+                  </p>
+                  <span className="mt-4 inline-flex items-center gap-1 text-sm text-muted-foreground">
+                    Read the article <ExternalLink size={14} aria-hidden="true" />
+                  </span>
+                </a>
+              </li>
+            ))}
+            <li>
+              <a href={IEEE_PAPER_URL} target="_blank" rel="noreferrer" className="card-jungle p-6 block h-full group">
+                <p className="text-jungle-canopy uppercase tracking-[0.2em] text-xs mb-3">IEEE Xplore</p>
+                <p className="text-ivory font-display text-lg group-hover:text-jungle-canopy transition-colors">
+                  RAPTOR publication
+                </p>
+                <span className="mt-4 inline-flex items-center gap-1 text-sm text-muted-foreground">
+                  View the paper <ExternalLink size={14} aria-hidden="true" />
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      {/* 05 — JOIN THE WORK */}
+      <section className="py-28 px-6 bg-jungle-deep">
+        <motion.div {...fadeUp} className="max-w-3xl mx-auto text-center">
+          <p className="text-jungle-canopy uppercase tracking-[0.25em] text-xs md:text-sm mb-4 font-medium">
+            Join the work
+          </p>
+          <h2 className="font-display text-4xl md:text-5xl text-ivory mb-6">
+            Conservation is a shared responsibility.
+          </h2>
+          <p className="text-lg text-ivory/80 mb-10 leading-relaxed">
+            Meaningful progress depends on residents, researchers, forest authorities, educators,
+            volunteers and responsible partners. Join a programme, share expertise or begin a
+            conversation about collaboration.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link to="/contact" className="btn-hero">Volunteer</Link>
+            <Link to="/aawaz-do" className="btn-ghost">Share a concern</Link>
+          </div>
+        </motion.div>
       </section>
 
       <Footer />

@@ -11,19 +11,22 @@
 
 @layer base {
   :root {
-    /* Core Jungle Green Palette */
-    --jungle-darkest: 150 40% 8%;
-    --jungle-dark: 150 35% 12%;
-    --jungle-deep: 150 30% 18%;
-    --jungle-medium: 145 32% 25%;
-    --jungle-amazon: 140 35% 32%;
-    --jungle-tropical: 135 38% 40%;
-    --jungle-canopy: 130 42% 50%;
-    
-    /* Ivory & White Palette */
-    --ivory: 45 30% 96%;
-    --ivory-warm: 40 25% 92%;
-    --off-white: 45 20% 88%;
+    /* Brand palette (website master copy):
+       deep forest green #173B30, warm ivory #F6F3EA,
+       charcoal #222722, muted ochre #A88958 */
+    --jungle-darkest: 160 30% 7%;
+    --jungle-dark: 161 36% 10%;
+    --jungle-deep: 162 44% 16%;   /* #173B30 */
+    --jungle-medium: 162 36% 22%;
+    --jungle-amazon: 162 34% 28%;
+    --jungle-tropical: 162 30% 36%;
+    --jungle-canopy: 37 32% 50%;  /* #A88958 — accent */
+
+    --ivory: 45 40% 94%;          /* #F6F3EA */
+    --ivory-warm: 42 30% 88%;
+    --off-white: 42 20% 84%;
+    --charcoal: 120 7% 14%;       /* #222722 */
+    --ochre: 37 32% 50%;          /* #A88958 */
     
     /* Semantic Tokens */
     --background: var(--jungle-darkest);
@@ -42,7 +45,7 @@
     --secondary-foreground: var(--ivory);
     
     --muted: var(--jungle-deep);
-    --muted-foreground: 140 15% 60%;
+    --muted-foreground: 45 12% 72%;
     
     --accent: var(--jungle-canopy);
     --accent-foreground: var(--jungle-darkest);
@@ -88,11 +91,29 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  /* Visible keyboard focus everywhere */
+  :focus-visible {
+    outline: 2px solid hsl(var(--ochre));
+    outline-offset: 2px;
+  }
+
+  /* Respect reduced-motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
   
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
-    @apply font-bold tracking-tight;
+    @apply font-semibold tracking-tight;
   }
 }
 
@@ -310,7 +331,7 @@
   
   /* Text gradient */
   .text-gradient-jungle {
-    background: linear-gradient(135deg, hsl(var(--jungle-canopy)) 0%, hsl(var(--jungle-tropical)) 100%);
+    background: linear-gradient(135deg, hsl(var(--jungle-canopy)) 0%, hsl(var(--ivory-warm)) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

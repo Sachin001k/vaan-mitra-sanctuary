@@ -2,42 +2,43 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { Shield, Zap, Wifi, Volume2, CloudRain, Battery, Cpu, Radio } from "lucide-react";
+import { Volume2, Cpu, Radio, Eye, UserCheck, ShieldAlert, ArrowRight, ExternalLink, FileText } from "lucide-react";
+import PageMeta from "@/components/PageMeta";
+import SectionHeader from "@/components/SectionHeader";
+import YouTubeEmbed from "@/components/YouTubeEmbed";
+import { IEEE_PAPER_URL, RAPTOR_VIDEO_ID } from "@/data/siteLinks";
 import raptorDevice1 from "@/assets/raptor-device-1.png";
 import raptorDevice2 from "@/assets/raptor-device-2.webp";
 import tigerImage from "@/assets/tiger.jpg";
 
-const features = [
+// Research architecture, as described in project materials.
+const architecture = [
   {
-    icon: Volume2,
-    title: "Advanced Bioacoustics",
-    description: "Detects gunshots, animal distress calls, and suspicious human activity using precision audio sensors.",
+    title: "Prototype hardware",
+    body: "Raspberry Pi-class edge processor, microphones, camera, positioning module and a power enclosure, as discussed in project materials.",
   },
   {
-    icon: Cpu,
-    title: "Machine Learning",
-    description: "AI-powered algorithms analyze sounds in real-time, distinguishing threats from natural forest sounds.",
+    title: "Analytical methods",
+    body: "Candidate methods include spectrogram-based acoustic classification and object detection, run on the device.",
   },
   {
-    icon: Wifi,
-    title: "Instant Alerts",
-    description: "Immediately notifies forest rangers and protection teams when threats are detected.",
+    title: "Deployed vs planned",
+    body: "Configurations that have actually been deployed are described separately from planned modules. An untested sensor or algorithm is not presented as field-proven.",
   },
-  {
-    icon: CloudRain,
-    title: "Weatherproof Design",
-    description: "Rugged construction withstands rain, heat, and harsh remote forest conditions year-round.",
-  },
-  {
-    icon: Battery,
-    title: "Energy Efficient",
-    description: "Optimized power consumption enables extended deployment in off-grid locations.",
-  },
-  {
-    icon: Shield,
-    title: "Low-Cost Protection",
-    description: "Affordable technology enables even resource-limited reserves to deploy comprehensive coverage.",
-  },
+];
+
+const steps = [
+  { step: "01", title: "Observe", icon: Volume2, body: "Microphones and optional cameras or environmental sensors gather signals in a monitored area." },
+  { step: "02", title: "Analyse", icon: Cpu, body: "On-device models assess selected acoustic and visual patterns for possible events of interest." },
+  { step: "03", title: "Review", icon: Eye, body: "Potential detections are logged and routed for human interpretation; confidence scores and false alarms matter." },
+  { step: "04", title: "Respond", icon: UserCheck, body: "Any action remains with authorised forest personnel and trained responders under local protocols." },
+];
+
+const safetyPoints = [
+  "RAPTOR is decision support, not an emergency dispatch service.",
+  "No real-time public wildlife location feeds.",
+  "No public disclosure of patrol routes, vulnerable animal locations or exact device placements.",
+  "Data retention, community consent, privacy and model error-handling are documented as part of the research.",
 ];
 
 const specs = [
@@ -52,6 +53,11 @@ const specs = [
 const RaptorPage = () => {
   return (
     <div className="min-h-screen bg-background">
+      <PageMeta
+        title="RAPTOR — Listening to the forest"
+        description="RAPTOR (Rapid Alert & Patrol Tracking for Operational Rescue) is a research initiative exploring edge AI and acoustic monitoring to support human–elephant coexistence."
+        path="/raptor"
+      />
       <Navigation />
 
       {/* Hero Section */}
@@ -74,39 +80,40 @@ const RaptorPage = () => {
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-jungle-amazon/20 border border-jungle-amazon/50 mb-6">
                 <Radio size={16} className="text-jungle-canopy" />
                 <span className="text-jungle-canopy text-sm font-medium uppercase tracking-wider">
-                  Conservation Technology
+                  Conservation technology / Field research
                 </span>
               </div>
 
               <h1 className="font-display text-5xl md:text-7xl text-ivory mb-6">
-                RAPTOR
+                Listening to the forest.
               </h1>
 
-              <p className="text-2xl text-jungle-canopy font-display mb-6">
-                Real-time Audio Protection & Threat Observation Relay
+              <p className="text-xl text-jungle-canopy font-display mb-6">
+                RAPTOR — Rapid Alert &amp; Patrol Tracking for Operational Rescue
               </p>
 
               <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                A next-generation, low-cost anti-poaching device built to protect wildlife 
-                with precision and reliability. RAPTOR transforms sound into intelligence, 
-                allowing rangers to act faster and save more lives.
+                RAPTOR investigates how edge AI, acoustic monitoring and visual sensing can help
+                identify possible wildlife distress and threats, enabling faster assessment by people
+                responsible for conservation response.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  to="/contact"
+                <a
+                  href={IEEE_PAPER_URL}
+                  target="_blank"
+                  rel="noreferrer"
                   className="btn-hero flex items-center justify-center gap-2"
                 >
-                  <Zap size={18} />
-                  Request Demo
-                </Link>
-                <a
-                  href="/pdf/specs.pdf"
-                  download="raptor-specs.pdf"
+                  <FileText size={18} aria-hidden="true" />
+                  Read the research
+                </a>
+                <Link
+                  to="/contact"
                   className="btn-ghost flex items-center justify-center gap-2"
                 >
-                  Download Specs
-                </a>
+                  Research collaboration
+                </Link>
               </div>
             </motion.div>
 
@@ -119,7 +126,7 @@ const RaptorPage = () => {
               <div className="relative aspect-square">
                 <img
                   src={raptorDevice1}
-                  alt="RAPTOR Device"
+                  alt="RAPTOR prototype acoustic monitoring device"
                   className="w-full h-full object-contain"
                 />
                 {/* Glow effect */}
@@ -149,62 +156,45 @@ const RaptorPage = () => {
         </div>
       </section>
 
-      {/* How It Works */}
+      {/* The Problem */}
       <section className="py-20 px-6 bg-jungle-darkest">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="font-display text-4xl md:text-5xl text-ivory mb-4">
-              How RAPTOR Works
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              A smart, elegant solution crafted for the frontline of conservation.
-            </p>
-          </motion.div>
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-[1fr_1.4fr] gap-12">
+          <div>
+            <p className="text-jungle-canopy uppercase tracking-[0.25em] text-xs md:text-sm mb-4 font-medium">The problem</p>
+            <h2 className="font-display text-4xl md:text-5xl text-ivory">Alerts only help when people can act on them.</h2>
+          </div>
+          <p className="text-lg text-muted-foreground leading-relaxed">
+            Human–elephant conflict takes different forms across Indian landscapes, from crop-raiding
+            encounters to barriers along elephant movement routes. Field teams need context-sensitive
+            information, reliable reporting and safe procedures. A sensor alert is useful only when it
+            is accurate enough, interpretable and connected to an appropriate response.
+          </p>
+        </div>
+      </section>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                step: "01",
-                title: "Listen",
-                description: "Advanced bioacoustic sensors continuously monitor the forest soundscape 24/7.",
-                icon: Volume2,
-              },
-              {
-                step: "02",
-                title: "Analyze",
-                description: "Machine learning models identify gunshots, distress calls, and suspicious activity in real-time.",
-                icon: Cpu,
-              },
-              {
-                step: "03",
-                title: "Alert",
-                description: "Instant notifications are sent to forest teams, enabling rapid response to threats.",
-                icon: Radio,
-              },
-            ].map((item, index) => (
-              <motion.div
+      {/* How It Works */}
+      <section className="py-20 px-6 bg-jungle-dark border-y border-jungle-medium/20">
+        <div className="max-w-7xl mx-auto">
+          <SectionHeader eyebrow="How RAPTOR works" title="Four steps, with people in the loop" align="center" />
+          <ol className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {steps.map((item, index) => (
+              <motion.li
                 key={item.step}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.15 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="stat-card relative group"
+                className="stat-card text-left relative"
               >
-                <div className="absolute top-6 right-6 text-6xl font-display text-jungle-medium/30">
+                <span className="absolute top-6 right-6 text-5xl font-display text-jungle-medium/60" aria-hidden="true">
                   {item.step}
-                </div>
-                <item.icon className="w-12 h-12 text-jungle-canopy mb-6" />
-                <h3 className="font-display text-2xl text-ivory mb-4">{item.title}</h3>
-                <p className="text-muted-foreground">{item.description}</p>
-              </motion.div>
+                </span>
+                <item.icon className="w-10 h-10 text-jungle-canopy mb-6" aria-hidden="true" />
+                <h3 className="font-display text-2xl text-ivory mb-3">{item.title}</h3>
+                <p className="text-muted-foreground">{item.body}</p>
+              </motion.li>
             ))}
-          </div>
+          </ol>
         </div>
       </section>
 
@@ -220,7 +210,7 @@ const RaptorPage = () => {
             >
               <img
                 src={raptorDevice2}
-                alt="RAPTOR in the field"
+                alt="RAPTOR prototype"
                 className="w-full h-auto"
               />
             </motion.div>
@@ -231,15 +221,10 @@ const RaptorPage = () => {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
+              <p className="text-jungle-canopy uppercase tracking-[0.25em] text-xs md:text-sm mb-4 font-medium">Prototype</p>
               <h2 className="font-display text-4xl text-ivory mb-6">
-                Built for the Wild
+                The device
               </h2>
-              <p className="text-muted-foreground mb-8 leading-relaxed">
-                RAPTOR's weatherproof, rugged design allows it to perform flawlessly 
-                in rain, heat, and remote forest conditions. Compact, energy-efficient, 
-                and affordable, it enables even resource-limited reserves to strengthen 
-                protection across vast landscapes.
-              </p>
 
               {/* Specs Grid */}
               <div className="grid grid-cols-3 gap-4">
@@ -266,39 +251,74 @@ const RaptorPage = () => {
         </div>
       </section>
 
-      {/* Features Grid */}
+      {/* Research Architecture */}
       <section className="py-20 px-6 bg-jungle-dark">
         <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="font-display text-4xl md:text-5xl text-ivory mb-4">
-              Key Features
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Every component designed with one purpose: protecting wildlife.
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feature, index) => (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="stat-card hover:border-jungle-amazon transition-all duration-300 group"
-              >
-                <feature.icon className="w-10 h-10 text-jungle-canopy mb-4 group-hover:scale-110 transition-transform" />
-                <h3 className="font-display text-xl text-ivory mb-3">{feature.title}</h3>
-                <p className="text-muted-foreground text-sm">{feature.description}</p>
-              </motion.div>
+          <SectionHeader eyebrow="Research architecture" title="What the system is made of" />
+          <div className="grid md:grid-cols-3 gap-6">
+            {architecture.map((item) => (
+              <article key={item.title} className="card-jungle p-8">
+                <h3 className="font-display text-xl text-ivory mb-3">{item.title}</h3>
+                <p className="text-muted-foreground leading-relaxed">{item.body}</p>
+              </article>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Field Validation */}
+      <section className="py-20 px-6 bg-jungle-darkest border-y border-jungle-medium/20">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12">
+          <div>
+            <SectionHeader eyebrow="Field validation" title="A demonstration is not a validated deployment">
+              <p>
+                Results are presented with their methodology, dates, the number of independently
+                evaluated recordings, precision, recall, false-positive rate, test conditions,
+                limitations and authorisations as they become available.
+              </p>
+              <p>Sensitive device coordinates and wildlife locations are never published.</p>
+            </SectionHeader>
+          </div>
+          <div className="card-jungle p-8 self-start">
+            <h3 className="font-display text-xl text-ivory mb-4 flex items-center gap-2">
+              <ShieldAlert className="text-jungle-canopy" size={22} aria-hidden="true" /> Safety &amp; ethics
+            </h3>
+            <ul className="space-y-3">
+              {safetyPoints.map((point) => (
+                <li key={point} className="text-muted-foreground leading-relaxed flex gap-3">
+                  <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 bg-jungle-canopy" aria-hidden="true" />
+                  {point}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* Research & Media */}
+      <section className="py-20 px-6 bg-jungle-dark">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+          <YouTubeEmbed videoId={RAPTOR_VIDEO_ID} title="RAPTOR project video" />
+          <div>
+            <SectionHeader eyebrow="Research & media" title="Read the research">
+              <p>
+                The RAPTOR research is published on IEEE Xplore. The project video shows the prototype
+                and how it is being explored.
+              </p>
+            </SectionHeader>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <a href={IEEE_PAPER_URL} target="_blank" rel="noreferrer" className="btn-hero gap-2">
+                IEEE publication <ExternalLink size={16} aria-hidden="true" />
+              </a>
+              <a
+                href={`https://www.youtube.com/watch?v=${RAPTOR_VIDEO_ID}`}
+                target="_blank"
+                rel="noreferrer"
+                className="btn-ghost gap-2"
+              >
+                Watch on YouTube <ExternalLink size={16} aria-hidden="true" />
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -337,7 +357,7 @@ const RaptorPage = () => {
         <div className="absolute inset-0">
           <img
             src={tigerImage}
-            alt="Tiger"
+            alt=""
             className="w-full h-full object-cover opacity-15"
           />
           <div className="absolute inset-0 bg-jungle-darkest/90" />
@@ -351,15 +371,18 @@ const RaptorPage = () => {
             viewport={{ once: true }}
           >
             <h2 className="font-display text-4xl md:text-5xl text-ivory mb-6">
-              Deploy RAPTOR in Your Reserve
+              Work with us on RAPTOR
             </h2>
             <p className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">
-              Join the growing network of protected areas using RAPTOR technology. 
-              Contact us for pricing, pilot programs, and partnership opportunities.
+              We welcome conversations with researchers, forest authorities and institutions
+              interested in responsible conservation monitoring.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/contact" className="btn-hero">
-                Request a Demo
+              <Link to="/contact" className="btn-hero gap-2">
+                Research collaboration <ArrowRight size={16} aria-hidden="true" />
+              </Link>
+              <Link to="/impact" className="btn-ghost gap-2">
+                Explore fieldwork <ArrowRight size={16} aria-hidden="true" />
               </Link>
             </div>
           </motion.div>

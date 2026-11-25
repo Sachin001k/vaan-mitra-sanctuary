@@ -10,8 +10,8 @@ const navItems = [
   { path: "/impact", label: "Impact" },
   { path: "/photography", label: "Photography" },
   { path: "/team", label: "Team" },
-  { path: "/blog", label: "Blog" },
-  { path: "/donate", label: "Aawaz Do" },
+  { path: "/journal", label: "Journal" },
+  { path: "/aawaz-do", label: "Aawaz Do" },
   { path: "/contact", label: "Contact" },
 ];
 
@@ -20,7 +20,7 @@ const Navigation = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass-jungle">
+    <nav aria-label="Main" className="fixed top-0 left-0 right-0 z-50 glass-jungle">
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -42,6 +42,7 @@ const Navigation = () => {
                 key={item.path}
                 to={item.path}
                 className={`nav-link ${location.pathname === item.path ? "active" : ""}`}
+                aria-current={location.pathname === item.path ? "page" : undefined}
               >
                 {item.label}
               </Link>
@@ -52,6 +53,9 @@ const Navigation = () => {
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="lg:hidden p-2 text-ivory"
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -65,6 +69,7 @@ const Navigation = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
+            id="mobile-menu"
             className="lg:hidden glass-jungle border-t border-jungle-medium/30"
           >
             <div className="px-6 py-4 flex flex-col gap-2">

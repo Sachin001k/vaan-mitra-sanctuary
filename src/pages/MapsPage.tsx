@@ -3,6 +3,8 @@ import { useQueries, useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import PageMeta from "@/components/PageMeta";
+import SectionHeader from "@/components/SectionHeader";
 import WildlifeMap, { wildlifeData, WildlifeSpecies } from "@/components/WildlifeMap";
 import NationalParkMaps from "@/components/NationalParkMaps";
 import { MapPin, Filter, Info, X } from "lucide-react";
@@ -61,6 +63,29 @@ const fetchWikiSummary = async (slug: string) => {
   }
   return response.json();
 };
+
+// Contextual landscapes from the website master copy. "Programme status" stays
+// "Contextual landscape" until Vann Mitra's work in an area is confirmed.
+const featuredLandscapes = [
+  {
+    name: "Central Indian tiger landscapes",
+    states: "Madhya Pradesh, Maharashtra and neighbouring states",
+    species: "Tiger",
+    context: "Habitat mosaics linking forests, agriculture and settlements; movement, land use and livelihoods together shape encounters between people and tigers.",
+  },
+  {
+    name: "Ranthambore landscape",
+    states: "Rajasthan",
+    species: "Tiger",
+    context: "A case study in the relationship between tourism, livelihoods, habitat edges and tiger conservation.",
+  },
+  {
+    name: "Elephant landscapes",
+    states: "Northeastern and central/eastern India",
+    species: "Asian elephant",
+    context: "Seasonal movement and habitat connectivity, and the importance of community alert systems.",
+  },
+];
 
 const MapsPage = () => {
   const [selectedSpecies, setSelectedSpecies] = useState<WildlifeSpecies | null>(null);
@@ -166,6 +191,11 @@ const MapsPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <PageMeta
+        title="Maps — Landscapes of coexistence"
+        description="Explore the geography of India's shared landscapes—where forests, settlements, farms and wildlife corridors meet."
+        path="/maps"
+      />
       <Navigation />
 
       {/* Hero */}
@@ -177,16 +207,43 @@ const MapsPage = () => {
             transition={{ duration: 0.6 }}
           >
             <p className="text-jungle-canopy uppercase tracking-[0.3em] text-sm mb-4">
-              Conservation Intelligence Dashboard
+              Maps
             </p>
             <h1 className="font-display text-5xl md:text-7xl text-ivory mb-6">
-              Wildlife Maps
+              Landscapes of coexistence.
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl">
-              Explore India's wildlife distribution with our interactive map showing species locations, 
-              populations, and conservation status across the subcontinent.
+              Explore the geography of India's shared landscapes—where forests, settlements, farms and
+              wildlife corridors meet.
             </p>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Featured landscapes */}
+      <section className="py-16 px-6 bg-jungle-darkest border-b border-jungle-medium/20">
+        <div className="max-w-7xl mx-auto">
+          <SectionHeader eyebrow="Featured landscapes" title="Where people and wildlife share space">
+            <p>
+              A geographic overview, not a public incident tracker. Landscapes where Vann Mitra has not
+              operated are labelled as contextual.
+            </p>
+          </SectionHeader>
+          <div className="grid md:grid-cols-3 gap-6">
+            {featuredLandscapes.map((item) => (
+              <article key={item.name} className="card-jungle p-8 flex flex-col">
+                <span className="self-start mb-4 px-2 py-1 text-xs uppercase tracking-wider border border-jungle-canopy/60 text-jungle-canopy">
+                  Contextual landscape
+                </span>
+                <h3 className="font-display text-2xl text-ivory mb-2">{item.name}</h3>
+                <dl className="text-sm text-muted-foreground mb-4 space-y-1">
+                  <div><dt className="inline text-ivory/80">State(s): </dt><dd className="inline">{item.states}</dd></div>
+                  <div><dt className="inline text-ivory/80">Focal species: </dt><dd className="inline">{item.species}</dd></div>
+                </dl>
+                <p className="text-muted-foreground leading-relaxed">{item.context}</p>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 

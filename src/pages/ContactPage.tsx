@@ -2,9 +2,19 @@ import type { FormEvent } from "react";
 import { motion } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { MapPin, Phone, Mail, Clock, Instagram, Facebook, Twitter, Youtube } from "lucide-react";
+import { Link } from "react-router-dom";
+import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import PageMeta from "@/components/PageMeta";
+import { CONTACT_EMAIL } from "@/data/siteLinks";
 
-const CONTACT_EMAIL = "vannmitrafoundation.org@gmail.com";
+const enquiryTypes = [
+  { value: "General enquiry", label: "General enquiries" },
+  { value: "Research and technology", label: "Research and technology" },
+  { value: "School programmes", label: "School programmes" },
+  { value: "Documentary and photography", label: "Documentary and photography" },
+  { value: "Volunteering and collaboration", label: "Volunteering and collaboration" },
+  { value: "Media request", label: "Media requests" },
+];
 
 // No backend yet: open the visitor's email app with the message pre-filled.
 const handleContactSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -12,9 +22,11 @@ const handleContactSubmit = (event: FormEvent<HTMLFormElement>) => {
   const form = new FormData(event.currentTarget);
   const name = String(form.get("name") ?? "");
   const email = String(form.get("email") ?? "");
-  const subject = String(form.get("subject") ?? "") || "general";
+  const organisation = String(form.get("organisation") ?? "");
+  const subject = String(form.get("subject") ?? "") || "General enquiry";
   const message = String(form.get("message") ?? "");
-  const body = `${message}\n\n— ${name} (${email})`;
+  const from = organisation ? `${name}, ${organisation}` : name;
+  const body = `${message}\n\n— ${from} (${email})`;
   window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
     `Website enquiry: ${subject}`,
   )}&body=${encodeURIComponent(body)}`;
@@ -23,6 +35,11 @@ const handleContactSubmit = (event: FormEvent<HTMLFormElement>) => {
 const ContactPage = () => {
   return (
     <div className="min-h-screen bg-background">
+      <PageMeta
+        title="Contact — Start a conversation"
+        description="Research partnerships, educational sessions, field collaboration, media requests and volunteering with Vann Mitra Foundation."
+        path="/contact"
+      />
       <Navigation />
 
       {/* Hero */}
@@ -34,14 +51,14 @@ const ContactPage = () => {
             transition={{ duration: 0.6 }}
           >
             <p className="text-jungle-canopy uppercase tracking-[0.3em] text-sm mb-4">
-              Get In Touch
+              Contact
             </p>
             <h1 className="font-display text-5xl md:text-7xl text-ivory mb-6">
-              Contact Us
+              Start a conversation.
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl">
-              Have questions about conservation? Want to volunteer or partner with us? 
-              We'd love to hear from you.
+              Research partnerships, educational sessions, field collaboration, media requests and
+              volunteering all begin with a thoughtful exchange.
             </p>
           </motion.div>
         </div>
@@ -59,30 +76,37 @@ const ContactPage = () => {
               viewport={{ once: true }}
             >
               <h2 className="font-display text-3xl text-ivory mb-8">
-                Send Us a Message
+                Send us a message
               </h2>
+              <p className="text-muted-foreground mb-8 -mt-4">
+                Sending opens your email app with the message ready to send to {CONTACT_EMAIL}.
+              </p>
               
               <form className="space-y-6" onSubmit={handleContactSubmit}>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm text-muted-foreground uppercase tracking-wider mb-2">
-                      Your Name
+                    <label htmlFor="contact-name" className="block text-sm text-muted-foreground uppercase tracking-wider mb-2">
+                      Your name
                     </label>
                     <input
+                      id="contact-name"
                       type="text"
                       name="name"
+                      autoComplete="name"
                       required
                       placeholder="Enter your name"
                       className="input-jungle"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-muted-foreground uppercase tracking-wider mb-2">
-                      Email Address
+                    <label htmlFor="contact-email" className="block text-sm text-muted-foreground uppercase tracking-wider mb-2">
+                      Email address
                     </label>
                     <input
+                      id="contact-email"
                       type="email"
                       name="email"
+                      autoComplete="email"
                       required
                       placeholder="Enter your email"
                       className="input-jungle"
@@ -90,25 +114,39 @@ const ContactPage = () => {
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm text-muted-foreground uppercase tracking-wider mb-2">
-                    Subject
-                  </label>
-                  <select name="subject" className="input-jungle">
-                    <option value="">Select a topic</option>
-                    <option value="volunteer">Volunteer Inquiry</option>
-                    <option value="partnership">Partnership Opportunity</option>
-                    <option value="donation">Donation Question</option>
-                    <option value="media">Media Request</option>
-                    <option value="general">General Inquiry</option>
-                  </select>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label htmlFor="contact-org" className="block text-sm text-muted-foreground uppercase tracking-wider mb-2">
+                      Organisation (optional)
+                    </label>
+                    <input
+                      id="contact-org"
+                      type="text"
+                      name="organisation"
+                      autoComplete="organization"
+                      placeholder="School, institution or group"
+                      className="input-jungle"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="contact-subject" className="block text-sm text-muted-foreground uppercase tracking-wider mb-2">
+                      Enquiry type
+                    </label>
+                    <select id="contact-subject" name="subject" required className="input-jungle">
+                      <option value="">Select a topic</option>
+                      {enquiryTypes.map((t) => (
+                        <option key={t.value} value={t.value}>{t.label}</option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm text-muted-foreground uppercase tracking-wider mb-2">
+                  <label htmlFor="contact-message" className="block text-sm text-muted-foreground uppercase tracking-wider mb-2">
                     Message
                   </label>
                   <textarea
+                    id="contact-message"
                     rows={6}
                     name="message"
                     required
@@ -117,8 +155,16 @@ const ContactPage = () => {
                   />
                 </div>
 
+                <label className="flex items-start gap-3 text-muted-foreground">
+                  <input type="checkbox" name="consent" required className="mt-1 h-4 w-4 accent-[hsl(var(--ochre))]" />
+                  <span>
+                    I agree that Vann Mitra Foundation may use these details to reply to my enquiry.
+                    See our <Link to="/privacy" className="text-jungle-canopy underline">privacy notice</Link>.
+                  </span>
+                </label>
+
                 <button type="submit" className="btn-hero w-full md:w-auto">
-                  Send Message
+                  Send message
                 </button>
               </form>
             </motion.div>
@@ -141,7 +187,7 @@ const ContactPage = () => {
                     <MapPin className="text-ivory" size={20} />
                   </div>
                   <div>
-                    <h4 className="text-ivory font-semibold mb-1">Office Address</h4>
+                    <h3 className="text-ivory font-semibold mb-1 font-body text-base">Office Address</h3>
                     <p className="text-muted-foreground text-sm">
                       Vann Mitra NGO<br />
                       Nagpur, Maharashtra 440010
@@ -154,12 +200,12 @@ const ContactPage = () => {
                     <Mail className="text-ivory" size={20} />
                   </div>
                   <div>
-                    <h4 className="text-ivory font-semibold mb-1">Email</h4>
+                    <h3 className="text-ivory font-semibold mb-1 font-body text-base">Email</h3>
                     <a
-                      href="mailto:vannmitrafoundation.org@gmail.com"
+                      href={`mailto:${CONTACT_EMAIL}`}
                       className="text-muted-foreground text-sm hover:text-jungle-canopy transition-colors"
                     >
-                      vannmitrafoundation.org@gmail.com
+                      {CONTACT_EMAIL}
                     </a>
                   </div>
                 </div>
@@ -169,7 +215,7 @@ const ContactPage = () => {
                     <Phone className="text-ivory" size={20} />
                   </div>
                   <div>
-                    <h4 className="text-ivory font-semibold mb-1">Phone</h4>
+                    <h3 className="text-ivory font-semibold mb-1 font-body text-base">Phone</h3>
                     <a
                       href="tel:+917350511500"
                       className="text-muted-foreground text-sm hover:text-jungle-canopy transition-colors"
@@ -184,7 +230,7 @@ const ContactPage = () => {
                     <Clock className="text-ivory" size={20} />
                   </div>
                   <div>
-                    <h4 className="text-ivory font-semibold mb-1">Working Hours</h4>
+                    <h3 className="text-ivory font-semibold mb-1 font-body text-base">Working Hours</h3>
                     <p className="text-muted-foreground text-sm">
                       Monday - Saturday: 9:00 AM - 6:00 PM<br />
                       Sunday: Closed
@@ -193,36 +239,22 @@ const ContactPage = () => {
                 </div>
               </div>
 
-              {/* Social Media */}
+              {/* What to contact us about */}
               <div className="pt-8 border-t border-jungle-medium/30">
-                <h4 className="text-ivory font-semibold mb-4">Follow Our Journey</h4>
-                <div className="flex gap-4">
-                  {[
-                    { icon: Instagram, label: "Instagram" },
-                    { icon: Facebook, label: "Facebook" },
-                    { icon: Twitter, label: "Twitter" },
-                    { icon: Youtube, label: "Youtube" },
-                  ].map(({ icon: Icon, label }) => (
-                    <a
-                      key={label}
-                      href="#"
-                      aria-label={label}
-                      className="w-12 h-12 bg-jungle-deep hover:bg-jungle-amazon transition-colors flex items-center justify-center"
-                    >
-                      <Icon size={20} className="text-ivory" />
-                    </a>
+                <h3 className="text-ivory font-semibold mb-4">We can help with</h3>
+                <ul className="space-y-2 text-muted-foreground">
+                  {enquiryTypes.map((t) => (
+                    <li key={t.value} className="flex gap-3">
+                      <span className="mt-2.5 h-1.5 w-1.5 flex-shrink-0 bg-jungle-canopy" aria-hidden="true" />
+                      {t.label}
+                    </li>
                   ))}
-                </div>
-              </div>
-
-              {/* Map Placeholder */}
-              <div className="aspect-video bg-jungle-deep border border-jungle-medium/30 flex items-center justify-center">
-                <div className="text-center">
-                  <MapPin size={40} className="text-jungle-canopy mx-auto mb-2" />
-                  <p className="text-muted-foreground text-sm">
-                    Interactive Map
-                  </p>
-                </div>
+                </ul>
+                <p className="mt-6 text-sm text-muted-foreground">
+                  To report a wildlife concern or share a community experience, use{" "}
+                  <Link to="/aawaz-do" className="text-jungle-canopy underline">Aawaz Do</Link>. For an
+                  immediate threat, contact local emergency services or the forest department.
+                </p>
               </div>
             </motion.div>
           </div>
